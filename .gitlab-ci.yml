@@ -1,0 +1,67 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+default:
+  image: '10.0.1.22:80/dev/paas_go/base:v1.0.0'
+  before_script:
+    - go version
+    - go env
+    - git log -1
+    - touch ./sudo-apis/go.mod
+    - sh scripts/sync_protobuf.sh
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH =~ /^master.*/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /^pre-release.*/'
+
+stages:
+  - lint
+  - test
+
+# 定义了cache的相关配置
+.go_lint_cache:
+  variables:
+    GOCACHE: ${CI_PROJECT_DIR}/cache/go
+    GOLANGCI_LINT_CACHE: ${CI_PROJECT_DIR}/cache/go
+    KUBERNETES_CPU_REQUEST: 1
+    KUBERNETES_MEMORY_REQUEST: 2Gi
+  cache:
+    key: sudo_sdk_go_linter_cache
+    paths:
+      - cache/go
+
+lint:
+  stage: lint
+  tags:
+    - k8s
+  needs: [ ]
+  rules:
+    - changes:
+        - "**/*.go"
+      allow_failure: false
+    - when: manual
+      allow_failure: true
+  extends: .go_lint_cache
+  script:
+    - ./scripts/run_lint.sh
+    - ./scripts/check_go_mod_tidiness.sh
+
+test:
+  stage: test
+  tags:
+    - k8s
+  needs: [ ]
+  rules:
+    - changes:
+        - "**/*.go"
+      allow_failure: false
+    - when: manual
+      allow_failure: true
+  script:
+    - ./scripts/run_coverage.sh
+  artifacts:
+    paths:
+      - ./coverage.html
+
+

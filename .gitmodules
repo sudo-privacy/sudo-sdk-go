@@ -1,0 +1,3 @@
+[submodule "sudo-apis"]
+	path = sudo-apis
+	url = ../../weixy/sudo-apis.git

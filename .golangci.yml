@@ -1,0 +1,100 @@
+# golangci-lint configuration file.
+# Read more at: https://github.com/golangci/golangci-lint#config-file
+
+linters-settings:
+  funlen:
+    lines: 80
+    statements: 50
+  errcheck:
+    check-type-assertions: true
+  goconst:
+    min-len: 2
+    min-occurrences: 3
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - importShadow
+      - unnamedResult
+      - whyNoLint
+  govet:
+    check-shadowing: true
+  gosec:
+    excludes:
+      # it's ok to use math/rand in some case
+      - G404
+  lll:
+    line-length: 120
+  godox:
+    keywords:
+      - BUG
+      - FIXME
+      - OPTIMIZE
+      - HACK
+      #- TODO
+  goimports:
+    local-prefixes: sudosdk
+  gomoddirectives:
+    replace-local: true
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exportloopref
+    - funlen
+    - goconst
+    - gocritic
+    - godox
+    - gofmt
+    - goimports
+    - gomoddirectives
+    - gocyclo
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - prealloc
+    - predeclared
+    - revive
+    - staticcheck
+    - structcheck
+    - tparallel
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+    - whitespace
+    - wastedassign
+
+run:
+  tests: false
+
+issues:
+  # Show only new issues: if there are unstaged changes or untracked files,
+  # only those changes are analyzed, else only changes in HEAD~ are analyzed.
+  # It's a super-useful option for integration of golangci-lint into existing
+  # large codebase. It's not practical to fix all existing issues at the moment
+  # of integration: much better don't allow issues in new code.
+  # Default is false.
+
+  # 在CI进行检查的时候，scripts/ci/run_lint.sh会对下面字段进行替换
+  #   false -> true: 仅检查新提交的代码
+  #   origin/master -> ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}: 取消注释，检查merge request中的所有代码 
+  new: false
+  # new-from-rev: origin/master
+  exclude-rules:
+    - linters:
+        - staticcheck
+      text: 'SA5008: unknown JSON option "squash"'
