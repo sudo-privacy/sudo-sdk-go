@@ -43,7 +43,7 @@ func NewHTTPClient(ctx context.Context, opts ...DialOption) (*SudoHTTPClient, er
 	}, nil
 }
 
-func (client *SudoHTTPClient) UploadVtableFile(ctx context.Context, filePath, identifyName string) (string, error) {
+func (client *SudoHTTPClient) UploadVtableFile(ctx context.Context, filePath, identityName string) (string, error) {
 	fp, err := os.OpenFile(filePath, os.O_RDONLY, os.ModePerm)
 	if err != nil {
 		return "", errors.Wrap(err, fmt.Sprintf("file:%s open failed", filePath))
@@ -53,9 +53,9 @@ func (client *SudoHTTPClient) UploadVtableFile(ctx context.Context, filePath, id
 	bodyBuffer := bytes.NewBufferString("")
 	bodyWriter := multipart.NewWriter(bodyBuffer)
 	// Create the first part of the file's http data and file information
-	_, err = bodyWriter.CreateFormFile("", identifyName)
+	_, err = bodyWriter.CreateFormFile("", identityName)
 	if err != nil {
-		return "", errors.Wrap(err, fmt.Sprintf("multipart create failed: bodyWriter.CreateFormFile(file, %s)", identifyName))
+		return "", errors.Wrap(err, fmt.Sprintf("multipart create failed: bodyWriter.CreateFormFile(file, %s)", identityName))
 	}
 	// mulitipart/form-data,close boundary
 	boundary := bodyWriter.Boundary()

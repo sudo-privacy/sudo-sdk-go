@@ -66,7 +66,7 @@ func (client *BasicSudoClient) getIdentifyFileName(filePath string) (string, err
 		return "", errors.Wrap(err, "os.OpenFile failed")
 	}
 	defer fp.Close()
-	identifyName := ""
+	identityName := ""
 	fileName := filepath.Base(filePath)
 	hasher := sha256.New()
 	_, err = io.Copy(hasher, fp)
@@ -76,21 +76,21 @@ func (client *BasicSudoClient) getIdentifyFileName(filePath string) (string, err
 	md5Str := hex.EncodeToString(hasher.Sum(nil))
 	splitedFileNames := strings.Split(fileName, ".")
 	for i := 0; i < len(splitedFileNames)-1; i++ {
-		identifyName += splitedFileNames[i]
+		identityName += splitedFileNames[i]
 	}
-	identifyName += "_" + md5Str + "." + splitedFileNames[len(splitedFileNames)-1]
-	return identifyName, nil
+	identityName += "_" + md5Str + "." + splitedFileNames[len(splitedFileNames)-1]
+	return identityName, nil
 }
 
-func (client *BasicSudoClient) CreateVtable(ctx context.Context, tableFilePath string) (uint64, error) {
-	identifyName, err := client.getIdentifyFileName(tableFilePath)
+func (client *BasicSudoClient) CreateVtableFromLocalFile(ctx context.Context, tableFilePath string) (uint64, error) {
+	identityName, err := client.getIdentifyFileName(tableFilePath)
 	if err != nil {
 		return 0, err
 	}
 	// check vtable already exist
 	resp, err := client.ListVtables(ctx, &basicvtable.ListVtablesRequest{
 		QueryOptions: &basicvtable.VtableQueryOptions{
-			Name: identifyName,
+			Name: identityName,
 		},
 	})
 	if err != nil {
@@ -99,14 +99,14 @@ func (client *BasicSudoClient) CreateVtable(ctx context.Context, tableFilePath s
 	for i := range resp.Data {
 		if resp.Data[i] != nil {
 			if resp.Data[i].Base != nil {
-				if resp.Data[i].Base.Name == identifyName {
+				if resp.Data[i].Base.Name == identityName {
 					return resp.Data[i].Base.Id, nil
 				}
 			}
 		}
 	}
 	// upload vtable file
-	uploadedFilePath, err := client.httpClient.UploadVtableFile(ctx, tableFilePath, identifyName)
+	uploadedFilePath, err := client.httpClient.UploadVtableFile(ctx, tableFilePath, identityName)
 	if err != nil {
 		return 0, err
 	}
@@ -120,15 +120,65 @@ func (client *BasicSudoClient) CreateVtable(ctx context.Context, tableFilePath s
 	splitedFileNames := strings.Split(uploadedFilePath, "/")
 	// create vtable
 	protoCrateVtableReq := basicvtable.CreateVtableRequest{
-		Name:         identifyName,
+		Name:         identityName,
 		DataShape:    "[]",
 		DatasourceId: updateDataSrcResp.DatasourceId,
-		Description:  identifyName,
+		Description:  identityName,
 		Path:         splitedFileNames[len(splitedFileNames)-1],
 	}
 	createVtableResp, err := client.FurnaceClient.CreateVtable(ctx, &protoCrateVtableReq)
 	if err != nil {
 		return 0, errors.Wrap(err, fmt.Sprintf(" client.FurnaceClient.CreateVtable(%+v)", protoCrateVtableReq.Name))
+	}
+	return createVtableResp.Data.Base.Id, nil
+}
+
+func (client *BasicSudoClient) CreateVtableFromDB(
+	ctx context.Context,
+	dataSrcName, dbName, tableName string,
+) (uint64, error) {
+	dataSrcs, err := client.GetDataSources(ctx, &datasource.GetDataSourceRequest{})
+	if err != nil {
+		return 0, errors.Wrap(err, "list data sources failed")
+	}
+	var targetDataSrcID uint64
+	for _, dataSrc := range dataSrcs.Data {
+		if dataSrc != nil {
+			if dataSrc.Name == dataSrcName {
+				targetDataSrcID = dataSrc.Id
+			}
+		}
+	}
+	if targetDataSrcID == 0 {
+		return 0, errors.New("unknown dataSrcName")
+	}
+	vtableName := fmt.Sprintf("%s_%s_%s", dataSrcName, dbName, tableName)
+	// check vtable already exist
+	resp, err := client.ListVtables(ctx, &basicvtable.ListVtablesRequest{
+		QueryOptions: &basicvtable.VtableQueryOptions{
+			Name: vtableName,
+		},
+	})
+	if err != nil {
+		return 0, errors.Wrap(err, "client.ListVtables")
+	}
+	for i := range resp.Data {
+		if resp.Data[i] != nil {
+			if resp.Data[i].Base != nil {
+				if resp.Data[i].Base.Name == tableName {
+					return resp.Data[i].Base.Id, nil
+				}
+			}
+		}
+	}
+	createVtableResp, err := client.CreateVtable(ctx, &basicvtable.CreateVtableRequest{
+		Name:         vtableName,
+		DatasourceId: targetDataSrcID,
+		Description:  tableName,
+		Path:         fmt.Sprintf("%s.%s", dbName, tableName),
+	})
+	if err != nil {
+		return 0, errors.Wrap(err, "create vtable failed")
 	}
 	return createVtableResp.Data.Base.Id, nil
 }
