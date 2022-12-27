@@ -10,10 +10,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"sudosdk/pkg/sudoclient"
-	"sudosdk/protobuf/basic/protobuf/enums"
-	"sudosdk/protobuf/online_service"
-	"sudosdk/protobuf/virtualservice/platformpb/pir"
+	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
+	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
+	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
+	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
 var clientStableStatus = []enums.PirService_Status{
@@ -25,6 +25,7 @@ var clientStableStatus = []enums.PirService_Status{
 	enums.PirService_TERMINATED,
 }
 
+// Client 封装了关于pir client service的gRPC接口，可用于client service管理和pir查询。
 type Client struct {
 	*sudoclient.SudoClient
 	serviceID string
@@ -33,6 +34,8 @@ type Client struct {
 	subPath   string
 }
 
+// Deploy 部署pir service。
+// 如果blocking为true，阻塞等待直到服务部署完成。
 func (c *Client) Deploy(ctx context.Context, blocking bool) error {
 	_, err := c.PirClientServiceTakeAction(ctx, &pir.ClientServiceTakeActionRequest{
 		ServiceIdStr: c.serviceID,
@@ -74,6 +77,7 @@ func (c *Client) getStatus(ctx context.Context) (enums.PirService_Status, error)
 	return resp.Data[0].Status, nil
 }
 
+// IsActive 检查service 是否就绪可用。
 func (c *Client) IsActive(ctx context.Context) (bool, error) {
 	status, err := c.getStatus(ctx)
 	if err != nil {
@@ -119,6 +123,7 @@ func (c *Client) waitStatus(
 	}
 }
 
+// WaitForReady 阻塞等待直到 service 部署完成，如果检查到部署失败会直接返回错误。
 func (c *Client) WaitForReady(ctx context.Context) error {
 	status, err := c.waitStatus(ctx, clientStableStatus, waitInterval)
 	if err != nil {
@@ -131,8 +136,9 @@ func (c *Client) WaitForReady(ctx context.Context) error {
 	return nil
 }
 
+// Delete 终结并删除service。
 func (c *Client) Delete(ctx context.Context) error {
-	currStatus, err := c.getStatus(ctx)
+	currentStatus, err := c.getStatus(ctx)
 	if err != nil {
 		sourceErr := errors.Cause(err)
 		if status, ok := status.FromError(sourceErr); ok {
@@ -141,7 +147,7 @@ func (c *Client) Delete(ctx context.Context) error {
 			}
 		}
 	}
-	if currStatus != enums.PirService_TERMINATED && currStatus != enums.PirService_FAILED {
+	if currentStatus != enums.PirService_TERMINATED && currentStatus != enums.PirService_FAILED {
 		err = c.TerminateService(ctx)
 		if err != nil {
 			return errors.Wrap(err, "terminate pir client service failed")
@@ -155,7 +161,7 @@ func (c *Client) Delete(ctx context.Context) error {
 	return nil
 }
 
-// TerminateService 返回后状态立刻变成Terminated,无需等待
+// TerminateService 仅终结service。service未删除，之后还可以重新部署。
 func (c *Client) TerminateService(ctx context.Context) error {
 	_, err := c.PirClientServiceTakeAction(ctx, &pir.ClientServiceTakeActionRequest{
 		ServiceIdStr: c.serviceID,
@@ -169,7 +175,7 @@ func (c *Client) TerminateService(ctx context.Context) error {
 }
 
 func (c *Client) deleteService(ctx context.Context) error {
-	currStatus, err := c.getStatus(ctx)
+	currentStatus, err := c.getStatus(ctx)
 	if err != nil {
 		sourceErr := errors.Cause(err)
 		if status, ok := status.FromError(sourceErr); ok {
@@ -178,7 +184,7 @@ func (c *Client) deleteService(ctx context.Context) error {
 			}
 		}
 	}
-	if currStatus != enums.PirService_TERMINATED && currStatus != enums.PirService_FAILED {
+	if currentStatus != enums.PirService_TERMINATED && currentStatus != enums.PirService_FAILED {
 		return errors.New("can't delete pir client service,service not terminated or failed")
 	}
 	_, err = c.DeletePirClientService(ctx, &pir.DeleteClientServiceRequest{
@@ -191,6 +197,7 @@ func (c *Client) deleteService(ctx context.Context) error {
 	return nil
 }
 
+// Pir 查询。
 func (c *Client) Pir(ctx context.Context, queries []*online_service.KeyColumn) (*pir.PirResponse, error) {
 	serviceIDUint64, err := strconv.ParseUint(c.serviceID, 10, 64)
 	if err != nil {

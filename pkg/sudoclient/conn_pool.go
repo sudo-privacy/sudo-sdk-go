@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// 参考 googlee.golang.org/api/transport/grpc/pool.go
+// 参考 https://github.com/googleapis/google-api-go-client/blob/v0.105.0/transport/grpc/pool.go
 // 移除singlePool
 // roundRobinConnPool增加tokenSource成员，用于释放
 
@@ -116,7 +116,7 @@ func (m multiError) Error() string {
 }
 
 func dialPool(ctx context.Context, opts ...DialOption) (ConnPool, error) {
-	o := newDefaultdialOptions()
+	o := newDefaultDialOptions()
 	for _, opt := range opts {
 		opt.Apply(o)
 	}

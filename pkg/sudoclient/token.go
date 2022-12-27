@@ -11,10 +11,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	basicplatformpb "sudosdk/protobuf/basic/protobuf/virtualservice/platformpb"
-	"sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
+	basicplatformpb "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb"
+	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
 )
 
+// TokenSource 是对 [credentials.PerRPCCredentials]的简单封装，每次访问可能触发token刷新。
 type TokenSource interface {
 	credentials.PerRPCCredentials
 	Close() error
@@ -35,8 +36,9 @@ type userAccountToken struct {
 	mutex        sync.RWMutex
 }
 
+// NewUserAccountToken 根据用户名、密码创建tokenSource，endpoint、账号等需要通过opts配置。
 func NewUserAccountToken(ctx context.Context, opts ...DialOption) (TokenSource, error) {
-	o := newDefaultdialOptions()
+	o := newDefaultDialOptions()
 	for _, opt := range opts {
 		opt.Apply(o)
 	}

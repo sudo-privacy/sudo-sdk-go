@@ -19,11 +19,12 @@ type dialOptions struct {
 	tokenTimeout     time.Duration
 }
 
+// DialOption 设置连接相关配置，比如 endpoint、账号、密码。
 type DialOption interface {
 	Apply(*dialOptions)
 }
 
-func newDefaultdialOptions() *dialOptions {
+func newDefaultDialOptions() *dialOptions {
 	return &dialOptions{
 		grpcEndPoint: "",
 		httpEndPoint: "",
@@ -34,6 +35,7 @@ func newDefaultdialOptions() *dialOptions {
 	}
 }
 
+// WithTokenSource 设置tokenSource。
 func WithTokenSource(tokenSource TokenSource) DialOption {
 	return withTokenSource{tokenSource}
 }
@@ -46,6 +48,7 @@ func (w withTokenSource) Apply(o *dialOptions) {
 	o.tokenSource = w.tokenSource
 }
 
+// WithConnPool 设置连接池。
 func WithConnPool(grpcConnPool ConnPool) DialOption {
 	return withConnPool{grpcConnPool}
 }
@@ -56,7 +59,7 @@ func (w withConnPool) Apply(o *dialOptions) {
 	o.grpcConnPool = w.grpcConnPool
 }
 
-// WithGrpcEndpoint set grpc service endpoint
+// WithGrpcEndpoint 设置gRPC服务endpoint。
 func WithGrpcEndpoint(endPoint string) DialOption {
 	return withGrpcEndpoint{endPoint}
 }
@@ -67,6 +70,7 @@ func (w withGrpcEndpoint) Apply(o *dialOptions) {
 	o.grpcEndPoint = w.endPoint
 }
 
+// WithGrpcEndpoint 设置HTTP endpoint。
 func WithHTTPEndpoint(endpoint string) DialOption {
 	return withHTTPEndpoint{endpoint}
 }
@@ -79,6 +83,7 @@ func (w withHTTPEndpoint) Apply(o *dialOptions) {
 	o.httpEndPoint = w.endpoint
 }
 
+// WithGrpcClientInterceptor 增加gRPC拦截器。
 func WithGrpcClientInterceptor(interceptor grpc.UnaryClientInterceptor) DialOption {
 	return withGrpcClientInterceptor{interceptor}
 }
@@ -91,6 +96,7 @@ func (w withGrpcClientInterceptor) Apply(o *dialOptions) {
 	o.grpcOpts = append(o.grpcOpts, grpc.WithChainUnaryInterceptor(w.interceptor))
 }
 
+// WithAccount 设置账号、密码。
 func WithAccount(account, password string) DialOption {
 	return withAccountSetting{
 		account: accountSetting{

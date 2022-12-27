@@ -12,12 +12,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	basicplatformpb "sudosdk/protobuf/basic/protobuf/virtualservice/platformpb"
-	"sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
-	basicvtable "sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
-	"sudosdk/protobuf/virtualservice/platformpb"
+	basicplatformpb "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb"
+	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
+	basicvtable "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
+	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb"
 )
 
+// BasicSudoClient 封装基础版sudo-api生成的 gRPC client。
 type BasicSudoClient struct {
 	basicplatformpb.CommonClient
 	basicplatformpb.FurnaceClient
@@ -25,6 +26,7 @@ type BasicSudoClient struct {
 	httpClient   *SudoHTTPClient
 }
 
+// SudoClient 封装标准版sudo-api生成的 gRPC client。
 type SudoClient struct {
 	BasicSudoClient
 	platformpb.CommonClient
@@ -32,8 +34,10 @@ type SudoClient struct {
 	grpcConnPool ConnPool
 }
 
+// NewBasicSudoClient 创建基础版SudoClient，其中仅包含基础版sudo-api提供的gRPC client。
+// client使用后需要关闭，从而释放其中的连接资源。
 func NewBasicSudoClient(ctx context.Context, opts ...DialOption) (*BasicSudoClient, error) {
-	o := newDefaultdialOptions()
+	o := newDefaultDialOptions()
 	for _, opt := range opts {
 		opt.Apply(o)
 	}
@@ -74,14 +78,16 @@ func (client *BasicSudoClient) getIdentifyFileName(filePath string) (string, err
 		return "", errors.Wrap(err, "md5 hasher copy failed")
 	}
 	md5Str := hex.EncodeToString(hasher.Sum(nil))
-	splitedFileNames := strings.Split(fileName, ".")
-	for i := 0; i < len(splitedFileNames)-1; i++ {
-		identityName += splitedFileNames[i]
+	splitFileNames := strings.Split(fileName, ".")
+	for i := 0; i < len(splitFileNames)-1; i++ {
+		identityName += splitFileNames[i]
 	}
-	identityName += "_" + md5Str + "." + splitedFileNames[len(splitedFileNames)-1]
+	identityName += "_" + md5Str + "." + splitFileNames[len(splitFileNames)-1]
 	return identityName, nil
 }
 
+// CreateVtableFromLocalFile 从本地文件创建vtable，返回vtableID。
+// 重复上传相同的文件会直接返回之前的vtableID。
 func (client *BasicSudoClient) CreateVtableFromLocalFile(ctx context.Context, tableFilePath string) (uint64, error) {
 	identityName, err := client.getIdentifyFileName(tableFilePath)
 	if err != nil {
@@ -117,14 +123,14 @@ func (client *BasicSudoClient) CreateVtableFromLocalFile(ctx context.Context, ta
 	if err != nil {
 		return 0, errors.Wrap(err, fmt.Sprintf("client.UpdataDataSource(%s)", uploadedFilePath))
 	}
-	splitedFileNames := strings.Split(uploadedFilePath, "/")
+	splitFileNames := strings.Split(uploadedFilePath, "/")
 	// create vtable
 	protoCrateVtableReq := basicvtable.CreateVtableRequest{
 		Name:         identityName,
 		DataShape:    "[]",
 		DatasourceId: updateDataSrcResp.DatasourceId,
 		Description:  identityName,
-		Path:         splitedFileNames[len(splitedFileNames)-1],
+		Path:         splitFileNames[len(splitFileNames)-1],
 	}
 	createVtableResp, err := client.FurnaceClient.CreateVtable(ctx, &protoCrateVtableReq)
 	if err != nil {
@@ -133,6 +139,9 @@ func (client *BasicSudoClient) CreateVtableFromLocalFile(ctx context.Context, ta
 	return createVtableResp.Data.Base.Id, nil
 }
 
+// CreateVtableFromDB 指定数据表创建vtable，返回vtableID。
+// dataSource需要在数牍隐私计算平台提前配置，dataSource名称会被校验是否存在。
+// 重复创建相同的数据表会直接返回之前的vtableID。
 func (client *BasicSudoClient) CreateVtableFromDB(
 	ctx context.Context,
 	dataSrcName, dbName, tableName string,
@@ -183,12 +192,15 @@ func (client *BasicSudoClient) CreateVtableFromDB(
 	return createVtableResp.Data.Base.Id, nil
 }
 
+// Close 关闭其中的连接资源。
 func (client *BasicSudoClient) Close() error {
 	return client.grpcConnPool.Close()
 }
 
+// NewSudoClient 创建标准版sudo-api gRPC client。SudoClient继承了BasicSudoClient的全部功能。
+// client使用后需要关闭，从而释放其中的连接资源。
 func NewSudoClient(ctx context.Context, opts ...DialOption) (*SudoClient, error) {
-	o := newDefaultdialOptions()
+	o := newDefaultDialOptions()
 	for _, opt := range opts {
 		opt.Apply(o)
 	}
@@ -216,6 +228,7 @@ func NewSudoClient(ctx context.Context, opts ...DialOption) (*SudoClient, error)
 	}, nil
 }
 
+// Close 关闭其中的连接资源。
 func (client *SudoClient) Close() error {
 	return client.grpcConnPool.Close()
 }

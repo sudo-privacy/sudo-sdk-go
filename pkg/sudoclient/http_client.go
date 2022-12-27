@@ -13,16 +13,20 @@ import (
 	"github.com/pkg/errors"
 )
 
+// 文件上传URL
 var UploadURL = "/upload"
 
+// SudoHTTPClient 封装HTTP Client和tokenSource，通过http接口提供上传文件功能。
 type SudoHTTPClient struct {
 	http.Client
 	endpoint    string
 	tokenSource TokenSource
 }
 
+// NewHTTPClient 返回封装后的HTTPClient。
+// endpoint和token通过opts配置。
 func NewHTTPClient(ctx context.Context, opts ...DialOption) (*SudoHTTPClient, error) {
-	o := newDefaultdialOptions()
+	o := newDefaultDialOptions()
 	for _, opt := range opts {
 		opt.Apply(o)
 	}
@@ -43,6 +47,7 @@ func NewHTTPClient(ctx context.Context, opts ...DialOption) (*SudoHTTPClient, er
 	}, nil
 }
 
+// UploadVtableFile 上传文件。
 func (client *SudoHTTPClient) UploadVtableFile(ctx context.Context, filePath, identityName string) (string, error) {
 	fp, err := os.OpenFile(filePath, os.O_RDONLY, os.ModePerm)
 	if err != nil {
