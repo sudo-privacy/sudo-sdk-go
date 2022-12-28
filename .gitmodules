@@ -1,3 +1,6 @@
 [submodule "sudo-apis"]
 	path = sudo-apis
 	url = ../../weixy/sudo-apis.git
+[submodule "scripts/cicd_scripts"]
+	path = scripts/cicd_scripts
+	url = ../../sudo/cicd-scripts.git
