@@ -50,7 +50,7 @@ func ExampleClient_Pir() {
 	// new pirClientF2(blocking,idempotent by token)
 	pirClientF2, err := factoryF2.NewPirClient(context.TODO(),
 		"party-f1",
-		"ws://localhost:7857/ws", // 服务方nginx地址
+		"ws://localhost:7857/ws", // 服务方nginx地址，https入口需配置为wss
 		fmt.Sprintf("%d", serviceID),
 		token,
 		true,

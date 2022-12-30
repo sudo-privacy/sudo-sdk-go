@@ -1,6 +1,7 @@
 package sudoclient
 
 import (
+	"net/http"
 	"time"
 
 	"google.golang.org/grpc"
@@ -15,6 +16,7 @@ type dialOptions struct {
 	grpcConnPoolSize int
 	grpcOpts         []grpc.DialOption
 	httpEndPoint     string
+	httpTransport    http.RoundTripper
 	tokenSource      TokenSource
 	tokenTimeout     time.Duration
 }
@@ -31,7 +33,8 @@ func newDefaultDialOptions() *dialOptions {
 		grpcOpts: []grpc.DialOption{
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 		},
-		tokenTimeout: time.Minute * 5,
+		httpTransport: http.DefaultTransport,
+		tokenTimeout:  time.Minute * 5,
 	}
 }
 
@@ -112,4 +115,32 @@ type withAccountSetting struct {
 
 func (w withAccountSetting) Apply(o *dialOptions) {
 	o.accountSetting = w.account
+}
+
+// WithGrpcDialOption 增加grpc.DialOption 设置
+func WithGrpcDialOption(grpcOpt grpc.DialOption) DialOption {
+	return withGrpcDialOption{
+		dialOption: grpcOpt,
+	}
+}
+
+type withGrpcDialOption struct {
+	dialOption grpc.DialOption
+}
+
+func (w withGrpcDialOption) Apply(o *dialOptions) {
+	o.grpcOpts = append(o.grpcOpts, w.dialOption)
+}
+
+// WithHTTPTransport 修改http Client Transport 设置
+func WithHTTPTransport(transport http.RoundTripper) DialOption {
+	return withHTTPTransport{transport: transport}
+}
+
+type withHTTPTransport struct {
+	transport http.RoundTripper
+}
+
+func (w withHTTPTransport) Apply(o *dialOptions) {
+	o.httpTransport = w.transport
 }

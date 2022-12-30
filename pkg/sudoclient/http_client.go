@@ -40,7 +40,7 @@ func NewHTTPClient(ctx context.Context, opts ...DialOption) (*SudoHTTPClient, er
 
 	return &SudoHTTPClient{
 		Client: http.Client{
-			Transport: http.DefaultTransport,
+			Transport: o.httpTransport,
 		},
 		endpoint:    o.httpEndPoint,
 		tokenSource: o.tokenSource,
