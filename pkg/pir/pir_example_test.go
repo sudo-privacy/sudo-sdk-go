@@ -6,7 +6,7 @@ import (
 
 	"sudoprivacy.com/go/sudosdk/pkg/pir"
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
+	protopir "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
 func ExampleClient_Pir() {
@@ -59,11 +59,11 @@ func ExampleClient_Pir() {
 		// TODO: Handle error.
 	}
 
-	query := []*online_service.KeyColumn{}
-	query = append(query, &online_service.KeyColumn{
+	query := []*protopir.PirRequest_KeyColumn{}
+	query = append(query, &protopir.PirRequest_KeyColumn{
 		Values: []string{"13380"},
 	})
-	query = append(query, &online_service.KeyColumn{
+	query = append(query, &protopir.PirRequest_KeyColumn{
 		Values: []string{"17816"},
 	})
 	// do pir request

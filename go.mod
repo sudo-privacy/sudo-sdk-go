@@ -3,6 +3,7 @@ module sudoprivacy.com/go/sudosdk
 go 1.17
 
 require (
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
 	golang.org/x/oauth2 v0.0.0-20220630143837-2104d58473e0
 	google.golang.org/genproto v0.0.0-20220708155623-50e5f4832e73
 	google.golang.org/grpc v1.47.0

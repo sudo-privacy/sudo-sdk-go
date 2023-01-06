@@ -12,7 +12,6 @@ import (
 
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
 	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
 	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
@@ -198,19 +197,17 @@ func (c *Client) deleteService(ctx context.Context) error {
 }
 
 // Pir 查询。
-func (c *Client) Pir(ctx context.Context, queries []*online_service.KeyColumn) (*pir.PirResponse, error) {
+func (c *Client) Pir(ctx context.Context, queries []*pir.PirRequest_KeyColumn) (*pir.PirResponse, error) {
 	serviceIDUint64, err := strconv.ParseUint(c.serviceID, 10, 64)
 	if err != nil {
 		errMsg := fmt.Sprintf("invalid serverServiceID: %s", c.serviceID)
 		return nil, errors.New(errMsg)
 	}
 	pirResp, err := c.PirRequest(ctx, &pir.PirRequest{
-		Base: &online_service.PirRequest{
-			ServiceId: serviceIDUint64,
-			Token:     c.token,
-			Keys:      queries,
-		},
-		SubPath: c.subPath,
+		ServiceId: serviceIDUint64,
+		Token:     c.token,
+		Keys:      queries,
+		SubPath:   c.subPath,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "Pir request failed")
