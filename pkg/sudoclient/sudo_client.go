@@ -12,16 +12,18 @@ import (
 
 	"github.com/pkg/errors"
 
-	basicplatformpb "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb"
 	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
+	basiccommon "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
+	basicfurnace "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/furnace"
 	basicvtable "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
-	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb"
+	common "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/service/common"
+	furnace "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/service/furnace"
 )
 
 // BasicSudoClient 封装基础版sudo-api生成的 gRPC client。
 type BasicSudoClient struct {
-	basicplatformpb.CommonClient
-	basicplatformpb.FurnaceClient
+	basiccommon.CommonClient
+	basicfurnace.FurnaceClient
 	grpcConnPool ConnPool
 	httpClient   *SudoHTTPClient
 }
@@ -29,8 +31,8 @@ type BasicSudoClient struct {
 // SudoClient 封装标准版sudo-api生成的 gRPC client。
 type SudoClient struct {
 	BasicSudoClient
-	platformpb.CommonClient
-	platformpb.FurnaceClient
+	common.CommonClient
+	furnace.FurnaceClient
 	grpcConnPool ConnPool
 }
 
@@ -57,8 +59,8 @@ func NewBasicSudoClient(ctx context.Context, opts ...DialOption) (*BasicSudoClie
 		return nil, err
 	}
 	return &BasicSudoClient{
-		CommonClient:  basicplatformpb.NewCommonClient(grpcConnPool),
-		FurnaceClient: basicplatformpb.NewFurnaceClient(grpcConnPool),
+		CommonClient:  basiccommon.NewCommonClient(grpcConnPool),
+		FurnaceClient: basicfurnace.NewFurnaceClient(grpcConnPool),
 		grpcConnPool:  grpcConnPool,
 		httpClient:    httpClient,
 	}, nil
@@ -117,7 +119,7 @@ func (client *BasicSudoClient) CreateVtableFromLocalFile(ctx context.Context, ta
 		return 0, err
 	}
 	// send file to datasource
-	updateDataSrcResp, err := client.UpdataDataSource(ctx, &datasource.UpdateDataSourceRequest{
+	updateDataSrcResp, err := client.FurnaceClient.SendFileToDataSource(ctx, &datasource.SendFileToDataSourceRequest{
 		FilePath: uploadedFilePath,
 	})
 	if err != nil {
@@ -146,7 +148,7 @@ func (client *BasicSudoClient) CreateVtableFromDB(
 	ctx context.Context,
 	dataSrcName, dbName, tableName string,
 ) (uint64, error) {
-	dataSrcs, err := client.GetDataSources(ctx, &datasource.GetDataSourceRequest{})
+	dataSrcs, err := client.GetDataSources(ctx, &datasource.GetDataSourcesRequest{})
 	if err != nil {
 		return 0, errors.Wrap(err, "list data sources failed")
 	}
@@ -222,8 +224,8 @@ func NewSudoClient(ctx context.Context, opts ...DialOption) (*SudoClient, error)
 	}
 	return &SudoClient{
 		BasicSudoClient: *basicSudoClient,
-		CommonClient:    platformpb.NewCommonClient(grpcConnPool),
-		FurnaceClient:   platformpb.NewFurnaceClient(grpcConnPool),
+		CommonClient:    common.NewCommonClient(grpcConnPool),
+		FurnaceClient:   furnace.NewFurnaceClient(grpcConnPool),
 		grpcConnPool:    grpcConnPool,
 	}, nil
 }

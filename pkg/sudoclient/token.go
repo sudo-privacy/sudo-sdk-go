@@ -11,8 +11,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	basicplatformpb "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb"
 	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
+	basiccommon "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
 )
 
 // TokenSource 是对 [credentials.PerRPCCredentials]的简单封装，每次访问可能触发token刷新。
@@ -27,7 +27,7 @@ type accountSetting struct {
 }
 
 type userAccountToken struct {
-	basicplatformpb.CommonClient
+	basiccommon.CommonClient
 	accessToken string
 	opts        *dialOptions
 
@@ -51,7 +51,7 @@ func NewUserAccountToken(ctx context.Context, opts ...DialOption) (TokenSource, 
 	}
 
 	token := &userAccountToken{
-		CommonClient: basicplatformpb.NewCommonClient(o.cc),
+		CommonClient: basiccommon.NewCommonClient(o.cc),
 		opts:         o,
 	}
 

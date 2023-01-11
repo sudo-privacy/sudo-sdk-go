@@ -29,7 +29,9 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
 protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/googleapis \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/grpc-gateway \
-    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service/common.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/common \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service/furnace.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/furnace \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service/coordinator.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/coordinator \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/options.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/misc.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/misc \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/vtable.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/vtable \
@@ -47,7 +49,8 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/infra_adapter/location/location.proto=sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/infra_adapter \
     --go_out=plugins=grpc:$project_dir \
     --go_opt=module=sudoprivacy.com/go/sudosdk \
-    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/mpc_virtual_service/*/*.proto
+    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/mpc_virtual_service/platform/*.proto \
+    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/mpc_virtual_service/platform/service/*.proto
 
 protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis \
@@ -74,7 +77,8 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/vtable.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/vtable \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/common.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/common \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/perm.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/perm \
-    --go_opt=Mprotobuf/mpc_virtual_service/platform/service.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb \
+    --go_opt=Mprotobuf/mpc_virtual_service/platform/service/common.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/service/common \
+    --go_opt=Mprotobuf/mpc_virtual_service/platform/service/furnace.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/service/furnace \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/yellowpage.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/yellowpage \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/paginator.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/paginator \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/pir.proto=sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir \
@@ -88,7 +92,9 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Mprotobuf/service/online_service_f3s.proto=sudoprivacy.com/go/sudosdk/protobuf/online_service \
     --go_out=plugins=grpc:$project_dir \
     --go_opt=module=sudoprivacy.com/go/sudosdk \
-    $project_dir/sudo-apis/protobuf/mpc_virtual_service/*/*.proto
+    $project_dir/sudo-apis/protobuf/mpc_virtual_service/platform/*.proto \
+    $project_dir/sudo-apis/protobuf/mpc_virtual_service/platform/service/common.proto \
+    $project_dir/sudo-apis/protobuf/mpc_virtual_service/platform/service/furnace.proto
 
 protoc $@ -I=$project_dir/sudo-apis \
     -I=$project_dir/sudo-apis/protobuf/basic \
