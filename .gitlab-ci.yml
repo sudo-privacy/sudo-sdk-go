@@ -1,5 +1,6 @@
 variables:
   BUILD_IMAGE: 10.0.1.22:80/dev/paas_go/build:v1.0.2
+  DEPLOY_IMAGE: 10.0.1.22:80/dev/paas_go/deploy:v1.0.1
   GIT_SUBMODULE_STRATEGY: recursive
 
 default:
@@ -20,7 +21,7 @@ stages:
   - lint
   - test
   - build
-  # - deploy_devops_cluster
+  - deploy_devops_cluster
 
 # 定义了cache的相关配置
 .go_lint_cache:
@@ -85,17 +86,20 @@ build:
   script:
     - ./scripts/cicd_scripts/ci_build_helper.sh -c sudosdk_godoc -f "godoc.dockerfile"
 
-# 暂时不支持非paas
-# godoc_deploy_devops:
-#   stage: deploy_devops_cluster
-#   image: ${DEPLOY_IMAGE}
-#   inherit:
-#     default: false
-#   tags:
-#     - k8s
-#   rules:
-#     - when: manual
-#   allow_failure: true
-#   needs: [ "build" ]
-#   script:
-#     - ./scripts/cicd_scripts/change_image_tag.sh -d devops -n sudosdk_godoc
+godoc_deploy_devops:
+  stage: deploy_devops_cluster
+  image: ${DEPLOY_IMAGE}
+  inherit:
+    default: false
+  tags:
+    - k8s
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^master.*/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /^pre-release.*/'
+      when: always
+      allow_failure: false
+    - when: manual
+      allow_failure: true
+  allow_failure: true
+  needs: [ "build" ]
+  script:
+    - ./scripts/cicd_scripts/change_image_tag.sh -n sudosdk_godoc -f "./sudosdk-godoc/values.yaml" -a
