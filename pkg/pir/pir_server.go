@@ -78,6 +78,29 @@ func (s *Server) getStatus(ctx context.Context) (enums.PirService_Status, error)
 	return resp.Data[0].Status, nil
 }
 
+func (s *Server) getMessage(ctx context.Context) (string, error) {
+	resp, err := s.GetPirServerServices(ctx, &pir.GetServerServicesRequest{
+		Query: &pir.ServerQueryOption{
+			ServiceId: s.serviceID,
+		},
+	})
+	if err != nil {
+		return "", errors.Wrap(err, fmt.Sprintf("get pir server service failed,serviceID:%d", s.serviceID))
+	}
+
+	if len(resp.Data) == 0 {
+		notFoundErr := status.Error(codes.NotFound, "pir server service not found")
+		return "", errors.Wrap(notFoundErr, "no data in get pir server service response")
+	}
+	if len(resp.Data) > 1 {
+		return "", errors.New("multi pir server service found with same service id")
+	}
+	if resp.Data[0] == nil {
+		return "", errors.New("internal error,response Data not exist")
+	}
+	return resp.Data[0].Message, nil
+}
+
 // IsActive 检查服务是否就绪。
 func (s *Server) IsActive(ctx context.Context) (bool, error) {
 	status, err := s.getStatus(ctx)
@@ -131,7 +154,11 @@ func (s *Server) WaitForReady(ctx context.Context, interval time.Duration) error
 		return err
 	}
 	if status != enums.PirService_ACTIVE && status != enums.PirService_USING {
-		errMsg := fmt.Sprintf("unexpected pir server service status: %s", status.String())
+		message, err := s.getMessage(ctx)
+		if err != nil {
+			return err
+		}
+		errMsg := fmt.Sprintf("unexpected pir server service status: %s,Message:%s", status.String(), message)
 		return errors.New(errMsg)
 	}
 	return nil
@@ -238,4 +265,40 @@ func (s *Server) deleteService(ctx context.Context) error {
 		return errors.Wrap(err, "delete pir server service failed")
 	}
 	return nil
+}
+
+// UpdateServerData 更新server service数据,grpc 接口的简单封装,更新过程中原来的数据正常提供服务。
+// 更新状态可通过 [Server.Status] 查询。
+func (s *Server) UpdateServerData(ctx context.Context, dataParam *pir.DataModeParams) error {
+	resp, err := s.SudoClient.UpdateServerData(ctx, &pir.UpdateServerDataRequest{
+		Id:             s.id,
+		DataModeParams: dataParam,
+	})
+	if err != nil {
+		return err
+	}
+	if resp.Status != pir.UpdateServerDataResponse_SUCCESS {
+		return status.Error(codes.Internal, resp.Msg)
+	}
+	return nil
+}
+
+// Status 查询并返回状态。
+func (s *Server) Status(ctx context.Context) (enums.PirService_Status, error) {
+	return s.getStatus(ctx)
+}
+
+// ID 返回id属性。
+func (s *Server) ID() uint64 {
+	return s.id
+}
+
+// Name 返回name属性
+func (s *Server) Name() string {
+	return s.identityName
+}
+
+// ServiceID 返回serviceID属性
+func (s *Server) ServiceID() uint64 {
+	return s.serviceID
 }

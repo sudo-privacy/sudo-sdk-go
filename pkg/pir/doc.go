@@ -16,9 +16,16 @@
 //	}
 //	factoryF1 := NewPirFactory(clientF1)
 //	// 创建并等待pir server service部署完成
-//	pirServerF1, err := factory1.NewPirServer(context.TODO(),
+//	pirServerF1, err := factoryF1.NewPirServer(context.TODO(),
 //		"IDENTITY_NAME_HERE",
-//		7,
+//		enums.SVCType_PIR,
+//		&protopir.DataModeParams{
+//			Params: &protopir.DataModeParams_VtableParams{
+//				VtableParams: &protopir.VtableModeParams{
+//					VtableId: 7,
+//				},
+//			},
+//		},
 //		[]string{"ID"},
 //		[]string{"age"},
 //		10,

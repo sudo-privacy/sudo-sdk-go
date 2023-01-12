@@ -12,6 +12,8 @@ import (
 
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
 	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
+	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
+	onlinesvcenums "sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
 	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
@@ -31,6 +33,8 @@ type Client struct {
 	token     string
 	id        uint64
 	subPath   string
+	svcType   onlinesvcenums.SVCType
+	name      string
 }
 
 // Deploy 部署pir service。
@@ -74,6 +78,29 @@ func (c *Client) getStatus(ctx context.Context) (enums.PirService_Status, error)
 		return 0, errors.New("internal error,response Data not exist")
 	}
 	return resp.Data[0].Status, nil
+}
+
+func (c *Client) getMessage(ctx context.Context) (string, error) {
+	resp, err := c.GetPirClientServices(ctx, &pir.GetPirClientServicesRequst{
+		Query: &pir.ClientQueryOption{
+			Id: c.id,
+		},
+	})
+	if err != nil {
+		return "", errors.Wrap(err, fmt.Sprintf("get pir client service failed, serviceID:%d", c.id))
+	}
+
+	if len(resp.Data) == 0 {
+		notFoundErr := status.Error(codes.NotFound, "pir client service not found")
+		return "", errors.Wrap(notFoundErr, "no data in get pir client service response")
+	}
+	if len(resp.Data) > 1 {
+		return "", errors.New("multi pir client service found with same service id")
+	}
+	if resp.Data[0] == nil {
+		return "", errors.New("internal error,response Data not exist")
+	}
+	return resp.Data[0].Message, nil
 }
 
 // IsActive 检查service 是否就绪可用。
@@ -129,7 +156,11 @@ func (c *Client) WaitForReady(ctx context.Context) error {
 		return err
 	}
 	if status != enums.PirService_ACTIVE {
-		errMsg := fmt.Sprintf("unexpected pir client service status: %s", status.String())
+		message, err := c.getMessage(ctx)
+		if err != nil {
+			return err
+		}
+		errMsg := fmt.Sprintf("unexpected pir client service status: %s,Message: %s", status.String(), message)
 		return errors.New(errMsg)
 	}
 	return nil
@@ -198,6 +229,9 @@ func (c *Client) deleteService(ctx context.Context) error {
 
 // Pir 查询。
 func (c *Client) Pir(ctx context.Context, queries []*pir.PirRequest_KeyColumn) (*pir.PirResponse, error) {
+	if c.svcType != *onlinesvcenums.SVCType_PIR.Enum() {
+		return nil, errors.New("not pir client service")
+	}
 	serviceIDUint64, err := strconv.ParseUint(c.serviceID, 10, 64)
 	if err != nil {
 		errMsg := fmt.Sprintf("invalid serverServiceID: %s", c.serviceID)
@@ -213,4 +247,41 @@ func (c *Client) Pir(ctx context.Context, queries []*pir.PirRequest_KeyColumn) (
 		return nil, errors.Wrap(err, "Pir request failed")
 	}
 	return pirResp, nil
+}
+
+// Factor3SVerify 三要素查询，grpc接口的简单封装，query参数不用设置subPath字段。
+func (c *Client) Factor3SVerify(
+	ctx context.Context,
+	query *online_service.Factor3SVerifyRequest,
+) (*online_service.Factor3SVerifyResponse, error) {
+	if c.svcType != *onlinesvcenums.SVCType_FACTOR3s.Enum() {
+		return nil, errors.New("not FACTOR3s client service")
+	}
+	query.SubPath = c.subPath
+	return c.SudoClient.Factor3SVerifyQuery(ctx, query)
+}
+
+// Status 查询并返回状态。
+func (c *Client) Status(ctx context.Context) (enums.PirService_Status, error) {
+	return c.getStatus(ctx)
+}
+
+// ID 返回id属性。
+func (c *Client) ID() uint64 {
+	return c.id
+}
+
+// Name 返回name属性
+func (c *Client) Name() string {
+	return c.name
+}
+
+// ServiceID 返回serviceID属性
+func (c *Client) ServiceID() string {
+	return c.serviceID
+}
+
+// Token 返回token属性。
+func (c *Client) Token() string {
+	return c.token
 }

@@ -7,8 +7,12 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
+	"sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
+	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/apiusage"
 	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
@@ -30,8 +34,10 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 //
 //	- identityName 指定pir server service名称。
 //
-//	- vtableID 指定提供数据服务的vtable。
-//	  vtable可以使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
+//	- svcType 设置 pir 或三要素服务。
+//
+//	- dataParam 配置提供服务的数据来源。
+//	  如果使用vtable，使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
 //	   [sudoclient.BasicSudoClient.CreateVtableFromDB] 提前创建。
 //	  vtable属性可以通过
 //	   [sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]  查询。
@@ -44,13 +50,21 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 func (f *Factory) NewPirServer(
 	ctx context.Context,
 	identityName string,
-	vtableID uint64,
+	svcType enums.SVCType,
+	dataParam *pir.DataModeParams,
 	keyColumns []string,
 	labelColumns []string,
 	indiscernibilityDegree uint64,
 	blocking bool,
 ) (*Server, error) {
-	pirServer, err := f.CreatePirServer(ctx, identityName, vtableID, keyColumns, labelColumns, indiscernibilityDegree)
+	pirServer, err := f.CreatePirServer(
+		ctx,
+		identityName,
+		svcType,
+		dataParam,
+		keyColumns,
+		labelColumns,
+		indiscernibilityDegree)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +86,8 @@ func (f *Factory) NewPirServer(
 func (f *Factory) CreatePirServer(
 	ctx context.Context,
 	identityName string,
-	vtableID uint64,
+	svcType enums.SVCType,
+	dataParam *pir.DataModeParams,
 	keyColumns []string,
 	labelColumns []string,
 	indiscernibilityDegree uint64,
@@ -83,46 +98,72 @@ func (f *Factory) CreatePirServer(
 	if err != nil {
 		return nil, errors.Wrap(err, "list pirServer failed")
 	}
-	for _, server := range getPirServersResp.Data {
-		if server != nil && server.Name == identityName {
-			return &Server{
-				SudoClient: f.SudoClient,
-				id:         server.Id,
-				serviceID:  server.ServiceId,
-			}, nil
+	for _, protoServer := range getPirServersResp.Data {
+		if protoServer != nil && protoServer.Name == identityName {
+			return f.protoPirServerToServer(protoServer), nil
 		}
 	}
+	dataMode := enums.DataMode_UNKNOWN_DATA_MODE
+	if dataParam.GetApiParams() != nil {
+		dataMode = enums.DataMode_API
+	}
+	if dataParam.GetVtableParams() != nil {
+		dataMode = enums.DataMode_VTABLE
+	}
+	if dataParam.GetMysqlParams() != nil {
+		dataMode = enums.DataMode_MYSQL
+	}
+	if dataMode == enums.DataMode_UNKNOWN_DATA_MODE {
+		return nil, errors.New("invalid dataParam")
+	}
+
 	createPirServerResp, err := f.CreatePirServerService(ctx, &pir.CreateServerServiceRequest{
 		PirServer: &pir.PirServer{
+			Type:                   svcType,
+			DataModeParams:         dataParam,
+			DataMode:               dataMode,
 			IndiscernibilityDegree: indiscernibilityDegree,
 			KeyColumns:             keyColumns,
 			LabelColumns:           labelColumns,
 			Name:                   identityName,
-			VtableId:               vtableID,
 			Path:                   randPath(5),
 		},
 	})
 	if err != nil {
 		return nil, errors.Wrap(err,
-			fmt.Sprintf("create pir server service failed, vtableID: %d, keyColumns: %s, LabelColumns: %s",
-				vtableID, keyColumns, labelColumns))
+			fmt.Sprintf("create pir server service failed, dataParam: %+v, keyColumns: %s, LabelColumns: %s",
+				dataParam, keyColumns, labelColumns))
 	}
 	if createPirServerResp.Data == nil {
 		return nil, errors.New("invalid create pir server service response, resp.Data not found")
 	}
+
+	return f.protoPirServerModelToServer(createPirServerResp.Data), nil
+}
+
+func (f *Factory) protoPirServerModelToServer(serverModel *pir.PirServerModel) *Server {
 	return &Server{
 		SudoClient:   f.SudoClient,
-		identityName: identityName,
-		id:           createPirServerResp.Data.Id,
-		serviceID:    createPirServerResp.Data.ServiceId,
-	}, nil
+		identityName: serverModel.Name,
+		id:           serverModel.Id,
+		serviceID:    serverModel.ServiceId,
+	}
+}
+
+func (f *Factory) protoPirServerToServer(server *pir.PirServer) *Server {
+	return &Server{
+		SudoClient:   f.SudoClient,
+		identityName: server.Name,
+		id:           server.Id,
+		serviceID:    server.ServiceId,
+	}
 }
 
 // CreatePirClient 创建pir client。
 // 参数配置参考 [Factory.NewPirClient] 。
 func (f *Factory) CreatePirClient(
 	ctx context.Context,
-	serverParty, serverPath, serverServiceID, tokenStr string,
+	serverParty, serverPath, serverServiceID, tokenStr string, svcType enums.SVCType,
 ) (*Client, error) {
 	serviceIDUint64, err := strconv.ParseUint(serverServiceID, 10, 64)
 	if err != nil {
@@ -146,19 +187,14 @@ func (f *Factory) CreatePirClient(
 		if data == nil {
 			return nil, errors.New("internal error, get pir client services return nil")
 		}
-		splitPath := strings.Split(data.Path, "/")
-		return &Client{
-			SudoClient: f.SudoClient,
-			id:         data.Id,
-			token:      tokenStr,
-			serviceID:  serverServiceID,
-			subPath:    splitPath[len(splitPath)-1],
-		}, nil
+
+		return f.protoPirClientToClient(data), nil
 	}
 	path := randPath(5)
 	createPirClientServiceResp, err := f.CreatePirClientService(ctx, &pir.CreatePirClientServiceRequest{
 		PirClient: &pir.PirClient{
 			Name:          "pir_client_" + path,
+			Type:          svcType,
 			Path:          path,
 			ServerPartyId: serverParty,
 			ServerPath:    serverPath,
@@ -172,13 +208,33 @@ func (f *Factory) CreatePirClient(
 	if createPirClientServiceResp.Data == nil {
 		return nil, errors.New("internal error, response nil data")
 	}
+	return f.protoPirClientModelToClient(createPirClientServiceResp.Data), nil
+}
+
+func (f *Factory) protoPirClientModelToClient(clientModel *pir.PirClientModel) *Client {
+	splitPath := strings.Split(clientModel.Path, "/")
 	return &Client{
 		SudoClient: f.SudoClient,
-		serviceID:  serverServiceID,
-		id:         createPirClientServiceResp.Data.Id,
-		subPath:    path,
-		token:      tokenStr,
-	}, nil
+		serviceID:  strconv.FormatUint(clientModel.ServiceId, 10),
+		id:         clientModel.Id,
+		subPath:    splitPath[len(splitPath)-1],
+		svcType:    clientModel.Type,
+		token:      clientModel.Token,
+		name:       clientModel.Name,
+	}
+}
+
+func (f *Factory) protoPirClientToClient(client *pir.PirClient) *Client {
+	splitPath := strings.Split(client.Path, "/")
+	return &Client{
+		SudoClient: f.SudoClient,
+		serviceID:  strconv.FormatUint(client.ServiceId, 10),
+		id:         client.Id,
+		subPath:    splitPath[len(splitPath)-1],
+		svcType:    client.Type,
+		token:      client.Token,
+		name:       client.Name,
+	}
 }
 
 // NewPirClient 创建并部署client service。
@@ -192,12 +248,15 @@ func (f *Factory) CreatePirClient(
 //	- serverServiceID 设置服务端serviceID，需要从服务端pir server读取。
 //
 //	- tokenStr 设置服务端提供的token，需要服务端pir server提前为客户端party创建，参考 [Server.NewClientToken] 。
+//
+//	- svcType 设置 pir 或三要素服务。
 func (f *Factory) NewPirClient(
 	ctx context.Context,
 	serverParty, serverPath, serverServiceID, tokenStr string,
+	svcType enums.SVCType,
 	blocking bool,
 ) (*Client, error) {
-	pirClient, err := f.CreatePirClient(ctx, serverParty, serverPath, serverServiceID, tokenStr)
+	pirClient, err := f.CreatePirClient(ctx, serverParty, serverPath, serverServiceID, tokenStr, svcType)
 	if err != nil {
 		return nil, err
 	}
@@ -212,4 +271,62 @@ func (f *Factory) NewPirClient(
 		}
 	}
 	return pirClient, nil
+}
+
+// Manager 是对 [Factory] 的简单封装，封装管控相关接口。
+type Manager struct {
+	Factory
+}
+
+// NewManager 返回一个简单封装 [sudoclient.SudoClient] 的 [Manager] 。
+func NewManager(factory Factory) *Manager {
+	return &Manager{
+		Factory: factory,
+	}
+}
+
+// UpsertUsageNotifyReceiver 是对 grpc 接口的简单封装。
+func (m *Manager) UpsertUsageNotifyReceiver(ctx context.Context, req *apiusage.UpsertAPIUsageReceiverRequest) error {
+	resp, err := m.SudoClient.UpsertUsageNotifyReceiver(ctx, req)
+	if err != nil {
+		return err
+	}
+	if resp.Status != apiusage.UpsertAPIUsageReceiverResponse_SUCCESS {
+		return status.Error(codes.Internal, resp.Msg)
+	}
+	return nil
+}
+
+// ListAPIUsages 是对grpc接口的简单封装。
+func (m *Manager) ListAPIUsages(
+	ctx context.Context,
+	req *apiusage.ListAPIUsagesRequest,
+) (*apiusage.ListAPIUsagesResponse, error) {
+	return m.SudoClient.ListAPIUsages(ctx, req)
+}
+
+// GetServers 查询 [Server] ,根据输入的过滤参数，可能返回0个、1个 或多个 Server。
+func (m *Manager) GetServers(ctx context.Context, query *pir.GetServerServicesRequest) ([]*Server, error) {
+	resp, err := m.SudoClient.GetPirServerServices(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	servers := []*Server{}
+	for i := range resp.Data {
+		servers = append(servers, m.Factory.protoPirServerToServer(resp.Data[i]))
+	}
+	return servers, nil
+}
+
+// GetClients 查询 [Client] , 根据输入的过滤参数，可能返回0、1个 或多个 Client。
+func (m *Manager) GetClients(ctx context.Context, query *pir.GetPirClientServicesRequst) ([]*Client, error) {
+	resp, err := m.SudoClient.GetPirClientServices(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	clients := []*Client{}
+	for i := range resp.Data {
+		clients = append(clients, m.Factory.protoPirClientToClient(resp.Data[i]))
+	}
+	return clients, nil
 }
