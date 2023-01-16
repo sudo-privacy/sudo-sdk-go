@@ -11,8 +11,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
-	basiccommon "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
+	"gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
+	basiccommon "gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
 )
 
 // TokenSource 是对 [credentials.PerRPCCredentials]的简单封装，每次访问可能触发token刷新。

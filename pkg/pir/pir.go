@@ -10,10 +10,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
-	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/apiusage"
-	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
+	"gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/pkg/sudoclient"
+	"gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/protobuf/online_service/enums"
+	"gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/protobuf/virtualservice/platformpb/apiusage"
+	"gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
 )
 
 // Factory 是对 [sudoclient.SudoClient] 的简单封装，提供创建pir Server/Client方法。
@@ -40,7 +40,7 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 //	  如果使用vtable，使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
 //	   [sudoclient.BasicSudoClient.CreateVtableFromDB] 提前创建。
 //	  vtable属性可以通过
-//	   [sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]  查询。
+//	   [gitlab.sudoprivacy.cn/weixy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]  查询。
 //
 //	- keyColumns 指定pir匹配列。
 //

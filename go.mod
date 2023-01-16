@@ -1,4 +1,4 @@
-module sudoprivacy.com/go/sudosdk
+module gitlab.sudoprivacy.cn/weixy/sudo-sdk-go
 
 go 1.17
 
