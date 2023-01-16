@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/credentials"
 	"sudoprivacy.com/go/sudosdk/pkg/pir"
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
+	enums1 "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/service/enums"
 	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
 	protopir "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
@@ -31,7 +31,7 @@ func ExampleClient_Pir() {
 	// New pir pirServerF1(blocking,idempotent by identityName)
 	pirServerF1, err := factoryF1.NewPirServer(context.TODO(),
 		"IDENTITY_NAME_HERE",
-		enums.SVCType_PIR,
+		enums1.SVCType_PIR,
 		&protopir.DataModeParams{
 			Params: &protopir.DataModeParams_VtableParams{
 				VtableParams: &protopir.VtableModeParams{
@@ -66,7 +66,7 @@ func ExampleClient_Pir() {
 		"ws://localhost:7857/ws", // 服务方nginx地址，https入口需配置为wss
 		fmt.Sprintf("%d", serviceID),
 		token,
-		enums.SVCType_PIR,
+		enums1.SVCType_PIR,
 		true,
 	)
 	if err != nil {
@@ -120,14 +120,14 @@ func ExampleClient_Factor3SVerify() {
 	// New pir server(blocking,idempotent by identityName)
 	server, err := factoryF1.NewPirServer(context.TODO(),
 		"lyy-server-test11",
-		enums.SVCType_FACTOR3s,
+		enums1.SVCType_FACTOR3s,
 		&protopir.DataModeParams{
 			Params: &protopir.DataModeParams_ApiParams{
 				ApiParams: &protopir.APIModeParams{
 					Url:  "http://10.0.1.40:9123",
 					Path: "/api/mock/data",
 					AuthParams: &protopir.AuthParams{
-						AuthMethod: enums.AuthMethod_NO_AUTH,
+						AuthMethod: enums1.AuthMethod_NO_AUTH,
 					},
 				},
 			},
@@ -167,7 +167,7 @@ func ExampleClient_Factor3SVerify() {
 		"wss://dist-lyy-f1.dist.sudoprivacy.cn:30443/ws", // 如果是 http 则配置为ws
 		fmt.Sprintf("%d", serviceID),
 		token,
-		enums.SVCType_FACTOR3s,
+		enums1.SVCType_FACTOR3s,
 		true,
 	)
 	if err != nil {

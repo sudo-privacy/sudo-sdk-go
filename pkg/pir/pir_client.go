@@ -12,8 +12,8 @@ import (
 
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
 	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
+	enums1 "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/service/enums"
 	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
-	onlinesvcenums "sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
 	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
@@ -33,7 +33,7 @@ type Client struct {
 	token     string
 	id        uint64
 	subPath   string
-	svcType   onlinesvcenums.SVCType
+	svcType   enums1.SVCType
 	name      string
 }
 
@@ -229,7 +229,7 @@ func (c *Client) deleteService(ctx context.Context) error {
 
 // Pir 查询。
 func (c *Client) Pir(ctx context.Context, queries []*pir.PirRequest_KeyColumn) (*pir.PirResponse, error) {
-	if c.svcType != *onlinesvcenums.SVCType_PIR.Enum() {
+	if c.svcType != *enums1.SVCType_PIR.Enum() {
 		return nil, errors.New("not pir client service")
 	}
 	serviceIDUint64, err := strconv.ParseUint(c.serviceID, 10, 64)
@@ -254,7 +254,7 @@ func (c *Client) Factor3SVerify(
 	ctx context.Context,
 	query *online_service.Factor3SVerifyRequest,
 ) (*online_service.Factor3SVerifyResponse, error) {
-	if c.svcType != *onlinesvcenums.SVCType_FACTOR3s.Enum() {
+	if c.svcType != *enums1.SVCType_FACTOR3s.Enum() {
 		return nil, errors.New("not FACTOR3s client service")
 	}
 	query.SubPath = c.subPath

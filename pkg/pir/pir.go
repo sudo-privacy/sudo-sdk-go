@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
+	enums1 "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/service/enums"
 	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/apiusage"
 	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
@@ -50,7 +50,7 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 func (f *Factory) NewPirServer(
 	ctx context.Context,
 	identityName string,
-	svcType enums.SVCType,
+	svcType enums1.SVCType,
 	dataParam *pir.DataModeParams,
 	keyColumns []string,
 	labelColumns []string,
@@ -86,7 +86,7 @@ func (f *Factory) NewPirServer(
 func (f *Factory) CreatePirServer(
 	ctx context.Context,
 	identityName string,
-	svcType enums.SVCType,
+	svcType enums1.SVCType,
 	dataParam *pir.DataModeParams,
 	keyColumns []string,
 	labelColumns []string,
@@ -103,17 +103,17 @@ func (f *Factory) CreatePirServer(
 			return f.protoPirServerToServer(protoServer), nil
 		}
 	}
-	dataMode := enums.DataMode_UNKNOWN_DATA_MODE
+	dataMode := enums1.DataMode_UNKNOWN_DATA_MODE
 	if dataParam.GetApiParams() != nil {
-		dataMode = enums.DataMode_API
+		dataMode = enums1.DataMode_API
 	}
 	if dataParam.GetVtableParams() != nil {
-		dataMode = enums.DataMode_VTABLE
+		dataMode = enums1.DataMode_VTABLE
 	}
 	if dataParam.GetMysqlParams() != nil {
-		dataMode = enums.DataMode_MYSQL
+		dataMode = enums1.DataMode_MYSQL
 	}
-	if dataMode == enums.DataMode_UNKNOWN_DATA_MODE {
+	if dataMode == enums1.DataMode_UNKNOWN_DATA_MODE {
 		return nil, errors.New("invalid dataParam")
 	}
 
@@ -163,7 +163,7 @@ func (f *Factory) protoPirServerToServer(server *pir.PirServer) *Server {
 // 参数配置参考 [Factory.NewPirClient] 。
 func (f *Factory) CreatePirClient(
 	ctx context.Context,
-	serverParty, serverPath, serverServiceID, tokenStr string, svcType enums.SVCType,
+	serverParty, serverPath, serverServiceID, tokenStr string, svcType enums1.SVCType,
 ) (*Client, error) {
 	serviceIDUint64, err := strconv.ParseUint(serverServiceID, 10, 64)
 	if err != nil {
@@ -253,7 +253,7 @@ func (f *Factory) protoPirClientToClient(client *pir.PirClient) *Client {
 func (f *Factory) NewPirClient(
 	ctx context.Context,
 	serverParty, serverPath, serverServiceID, tokenStr string,
-	svcType enums.SVCType,
+	svcType enums1.SVCType,
 	blocking bool,
 ) (*Client, error) {
 	pirClient, err := f.CreatePirClient(ctx, serverParty, serverPath, serverServiceID, tokenStr, svcType)
