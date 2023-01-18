@@ -7,10 +7,10 @@
 package furnacestatus
 
 import (
+	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	_ "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options"
 	sync "sync"
 )
 

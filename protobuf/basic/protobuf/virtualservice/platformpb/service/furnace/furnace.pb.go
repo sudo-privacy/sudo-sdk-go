@@ -23,6 +23,12 @@ package platformpb
 import (
 	context "context"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	protobuf "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf"
+	datasource "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
+	misc "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/misc"
+	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	resource "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/resource"
+	vtable "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -31,12 +37,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	protobuf "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf"
-	datasource "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
-	misc "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/misc"
-	_ "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	resource "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/resource"
-	vtable "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
 )
 
 const (

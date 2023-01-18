@@ -7,10 +7,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/vtable"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
-	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/vtable"
 )
 
 func ExampleNewSudoClient() {

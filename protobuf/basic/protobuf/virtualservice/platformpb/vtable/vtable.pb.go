@@ -21,15 +21,15 @@
 package vtable
 
 import (
+	protobuf "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf"
+	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
+	datasource "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
+	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	paginator "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
+	user "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/user"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	protobuf "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf"
-	enums "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
-	datasource "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
-	_ "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	paginator "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
-	user "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/user"
 	sync "sync"
 )
 

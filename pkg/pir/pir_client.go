@@ -10,11 +10,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
-	"sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
-	onlinesvcenums "sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
-	"sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service"
+	onlinesvcenums "github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
 )
 
 var clientStableStatus = []enums.PirService_Status{

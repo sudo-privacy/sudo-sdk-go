@@ -8,6 +8,8 @@ package platformpb
 
 import (
 	context "context"
+	jwt1 "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
+	jwt "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/jwt"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -15,8 +17,6 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	jwt1 "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/jwt"
-	jwt "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/jwt"
 )
 
 const (

@@ -1,4 +1,4 @@
-module sudoprivacy.com/go/sudosdk
+module github.com/sudo-privacy/sudo-sdk-go
 
 go 1.17
 

@@ -7,11 +7,11 @@
 package common
 
 import (
+	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
+	paginator "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	enums "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
-	paginator "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
 	sync "sync"
 )
 

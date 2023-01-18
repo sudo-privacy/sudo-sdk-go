@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/pir"
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums"
+	protopir "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"sudoprivacy.com/go/sudosdk/pkg/pir"
-	"sudoprivacy.com/go/sudosdk/pkg/sudoclient"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service"
-	"sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
-	protopir "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
 )
 
 func ExampleClient_Pir() {

@@ -8,6 +8,14 @@ package platformpb
 
 import (
 	context "context"
+	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	online_service "github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service"
+	apiusage "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/apiusage"
+	cron "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/cron"
+	furnacestatus "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/furnacestatus"
+	pir "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
+	token "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/token"
+	vtable "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/vtable"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -16,14 +24,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	_ "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	online_service "sudoprivacy.com/go/sudosdk/protobuf/online_service"
-	apiusage "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/apiusage"
-	cron "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/cron"
-	furnacestatus "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/furnacestatus"
-	pir "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/pir"
-	token "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/token"
-	vtable "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/vtable"
 )
 
 const (

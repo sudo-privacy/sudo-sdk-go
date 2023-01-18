@@ -21,12 +21,12 @@
 package resource
 
 import (
+	protobuf "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf"
+	common "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common"
+	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	protobuf "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf"
-	common "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/common"
-	enums "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
 	sync "sync"
 )
 
