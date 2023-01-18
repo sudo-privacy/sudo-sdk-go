@@ -40,7 +40,8 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 //	  如果使用vtable，使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
 //	   [sudoclient.BasicSudoClient.CreateVtableFromDB] 提前创建。
 //	  vtable属性可以通过
-//	   [github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]  查询。
+//	   [github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]
+//	  查询。
 //
 //	- keyColumns 指定pir匹配列。
 //
