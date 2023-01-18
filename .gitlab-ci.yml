@@ -51,6 +51,17 @@ lint:
     - ./scripts/run_lint.sh
     - ./scripts/check_go_mod_tidiness.sh
 
+lint:check_protobuf:
+  stage: lint
+  tags:
+    - k8s
+  needs: [ ]
+  only:
+    - merge_requests
+  allow_failure: false
+  script:
+    - ./scripts/check_protobuf.sh
+
 test:
   stage: test
   tags:
