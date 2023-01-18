@@ -21,13 +21,13 @@
 package protobuf
 
 import (
+	common "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common"
+	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
+	infra_adapter "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/infra_adapter"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	common "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/common"
-	enums "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/enums"
-	infra_adapter "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/infra_adapter"
 	sync "sync"
 )
 

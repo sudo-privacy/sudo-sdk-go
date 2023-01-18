@@ -8,15 +8,15 @@ package online_service
 
 import (
 	context "context"
+	protobuf "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf"
+	infra_adapter "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/infra_adapter"
+	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	protobuf "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf"
-	infra_adapter "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/infra_adapter"
-	enums "sudoprivacy.com/go/sudosdk/protobuf/online_service/enums"
 	sync "sync"
 )
 

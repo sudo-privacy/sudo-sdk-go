@@ -7,12 +7,12 @@
 package user
 
 import (
+	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	user "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/user"
+	perm "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/perm"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	_ "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	user "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/user"
-	perm "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/perm"
 	sync "sync"
 )
 

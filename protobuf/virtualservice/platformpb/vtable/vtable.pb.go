@@ -7,14 +7,14 @@
 package vtable
 
 import (
+	datasource "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
+	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	vtable "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
+	common "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/common"
+	user "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/user"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	datasource "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
-	_ "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	vtable "sudoprivacy.com/go/sudosdk/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
-	common "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/common"
-	user "sudoprivacy.com/go/sudosdk/protobuf/virtualservice/platformpb/user"
 	sync "sync"
 )
 
