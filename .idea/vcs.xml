@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sudo-apis" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sudo-apis/protobuf/basic" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sudo-apis/protobuf/basic/sudo/protobuf/googleapis" vcs="Git" />
+  </component>
+</project>
