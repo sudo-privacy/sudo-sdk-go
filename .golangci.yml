@@ -45,7 +45,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
     - depguard
     - dogsled
     - dupl
@@ -69,12 +68,10 @@ linters:
     - predeclared
     - revive
     - staticcheck
-    - structcheck
     - tparallel
     - unconvert
     - unparam
     - unused
-    - varcheck
     - whitespace
     - wastedassign
 
@@ -98,3 +95,6 @@ issues:
     - linters:
         - staticcheck
       text: 'SA5008: unknown JSON option "squash"'
+    - linters:
+        - lll
+      source: "^//"

@@ -10,10 +10,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/protobuf/online_service/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/protobuf/virtualservice/platformpb/apiusage"
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/protobuf/virtualservice/platformpb/pir"
 	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/apiusage"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
 )
 
 // Factory 是对 [sudoclient.SudoClient] 的简单封装，提供创建pir Server/Client方法。
@@ -30,24 +30,24 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 
 // NewPirServer 创建并部署 pir server。
 //
-//	- 如果设置blocking，阻塞等待直到service部署完成。
+//   - 如果设置blocking，阻塞等待直到service部署完成。
 //
-//	- identityName 指定pir server service名称。
+//   - identityName 指定pir server service名称。
 //
-//	- svcType 设置 pir 或三要素服务。
+//   - svcType 设置 pir 或三要素服务。
 //
-//	- dataParam 配置提供服务的数据来源。
-//	  如果使用vtable，使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
-//	   [sudoclient.BasicSudoClient.CreateVtableFromDB] 提前创建。
-//	  vtable属性可以通过
-//	   [github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]
-//	  查询。
+//   - dataParam 配置提供服务的数据来源。
+//     如果使用vtable，使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
+//     [sudoclient.BasicSudoClient.CreateVtableFromDB] 提前创建。
+//     vtable属性可以通过
+//     [github.com/sudo-privacy/sudo-sdk-go/pkg/protobuf/basic/protobuf/virtualservice/platformpb.FurnaceClient.ListVtables]
+//     查询。
 //
-//	- keyColumns 指定pir匹配列。
+//   - keyColumns 指定pir匹配列。
 //
-//	- labelColumns  设置pir查询列。
+//   - labelColumns  设置pir查询列。
 //
-//	- indiscernibilityDegree 设置pir不可区分度。
+//   - indiscernibilityDegree 设置pir不可区分度。
 func (f *Factory) NewPirServer(
 	ctx context.Context,
 	identityName string,
@@ -240,17 +240,17 @@ func (f *Factory) protoPirClientToClient(client *pir.PirClient) *Client {
 
 // NewPirClient 创建并部署client service。
 //
-//	- 如果设置blocking，阻塞等待直到service部署完成。
+//   - 如果设置blocking，阻塞等待直到service部署完成。
 //
-//	- serverParty 设置pir服务端partyID。
+//   - serverParty 设置pir服务端partyID。
 //
-//	- serverPath 设置服务端url地址。比如"ws://localhost:7857/ws"。
+//   - serverPath 设置服务端url地址。比如"ws://localhost:7857/ws"。
 //
-//	- serverServiceID 设置服务端serviceID，需要从服务端pir server读取。
+//   - serverServiceID 设置服务端serviceID，需要从服务端pir server读取。
 //
-//	- tokenStr 设置服务端提供的token，需要服务端pir server提前为客户端party创建，参考 [Server.NewClientToken] 。
+//   - tokenStr 设置服务端提供的token，需要服务端pir server提前为客户端party创建，参考 [Server.NewClientToken] 。
 //
-//	- svcType 设置 pir 或三要素服务。
+//   - svcType 设置 pir 或三要素服务。
 func (f *Factory) NewPirClient(
 	ctx context.Context,
 	serverParty, serverPath, serverServiceID, tokenStr string,
