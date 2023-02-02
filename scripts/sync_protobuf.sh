@@ -19,16 +19,28 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common \
     --go_opt=Msudo/protobuf/api_usage/api_usage.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/api_usage \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/paginator.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator \
+    --go_opt=Msudo/protobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums \
+    --go_opt=Msudo/protobuf/service/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
     --go_opt=module=github.com/sudo-privacy/sudo-sdk-go \
     $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/common.proto \
     $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/enums/enums.proto \
     $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/infra_adapter/infra_adapter.proto \
     $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/infra_adapter/location/location.proto \
-    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/api_usage/api_usage.proto
+    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/api_usage/api_usage.proto \
+    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/service/enums/online_svc_enums.proto \
+    $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/service/*.proto
 
 protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/googleapis \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/grpc-gateway \
+    --go_opt=Msudo/protobuf/api_usage/api_usage.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/api_usage \
+    --go_opt=Msudo/protobuf/service/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/common \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service/furnace.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/furnace \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/service/coordinator.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/coordinator \
@@ -43,6 +55,8 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/paginator.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/jwt.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/jwt \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/party.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/party \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/token.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/token \
     --go_opt=Msudo/protobuf/infra_adapter/infra_adapter.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common \
@@ -56,6 +70,10 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/googleapis \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/grpc-gateway \
+    --go_opt=Msudo/protobuf/service/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/options.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/misc.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/misc \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/vtable.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/vtable \
@@ -66,6 +84,8 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/yellowpage.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/yellowpage \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/paginator.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/jwt.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/jwt \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/token.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/token \
     --go_opt=Msudo/protobuf/infra_adapter/infra_adapter.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common \
@@ -86,6 +106,7 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/jwt.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/jwt \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/apiusage.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/apiusage \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/task.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/task \
+    --go_opt=Mprotobuf/mpc_virtual_service/platform/feature.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/feature \
     --go_opt=Mprotobuf/service/online_service_pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service \
     --go_opt=Mprotobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums \
     --go_opt=Mprotobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service \
@@ -100,15 +121,13 @@ protoc $@ -I=$project_dir/sudo-apis \
     -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/grpc-gateway \
     --go_out=plugins=grpc:$project_dir \
+    --go_opt=Msudo/protobuf/service/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service \
+    --go_opt=Msudo/protobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums \
     --go_opt=Msudo/protobuf/infra_adapter/infra_adapter.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums \
     --go_opt=Msudo/protobuf/infra_adapter/location/location.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/infra_adapter \
-    --go_opt=Mprotobuf/service/online_service_pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service \
-    --go_opt=Mprotobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums \
-    --go_opt=Mprotobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service \
     --go_opt=Mprotobuf/service/online_service_f3s.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service \
     --go_opt=module=github.com/sudo-privacy/sudo-sdk-go \
-    $project_dir/sudo-apis/protobuf/service/enums/online_svc_enums.proto \
-    $project_dir/sudo-apis/protobuf/service/online_service_common.proto \
     $project_dir/sudo-apis/protobuf/service/online_service_f3s.proto

@@ -12,9 +12,9 @@ import (
 
 	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
+	onlinesvcenums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service"
-	onlinesvcenums "github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
 )
 
 var clientStableStatus = []enums.PirService_Status{

@@ -171,6 +171,124 @@ func (x *Operator) GetReady() bool {
 	return false
 }
 
+type PartyResourceStatus struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Status map[uint64]*Operator `protobuf:"bytes,1,rep,name=status,proto3" json:"status,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *PartyResourceStatus) Reset() {
+	*x = PartyResourceStatus{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PartyResourceStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyResourceStatus) ProtoMessage() {}
+
+func (x *PartyResourceStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyResourceStatus.ProtoReflect.Descriptor instead.
+func (*PartyResourceStatus) Descriptor() ([]byte, []int) {
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *PartyResourceStatus) GetStatus() map[uint64]*Operator {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+type Consumption struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ResourceId   string              `protobuf:"bytes,1,opt,name=resource_id,json=resourceId,proto3" json:"resource_id,omitempty"`
+	Consumed     map[string]uint64   `protobuf:"bytes,2,rep,name=consumed,proto3" json:"consumed,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
+	ResourceType enums.Resource_Type `protobuf:"varint,3,opt,name=resource_type,json=resourceType,proto3,enum=sudo.protobuf.enums.Resource_Type" json:"resource_type,omitempty"`
+	ResourceMode enums.Resource_Mode `protobuf:"varint,4,opt,name=resource_mode,json=resourceMode,proto3,enum=sudo.protobuf.enums.Resource_Mode" json:"resource_mode,omitempty"`
+}
+
+func (x *Consumption) Reset() {
+	*x = Consumption{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Consumption) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Consumption) ProtoMessage() {}
+
+func (x *Consumption) ProtoReflect() protoreflect.Message {
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Consumption.ProtoReflect.Descriptor instead.
+func (*Consumption) Descriptor() ([]byte, []int) {
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Consumption) GetResourceId() string {
+	if x != nil {
+		return x.ResourceId
+	}
+	return ""
+}
+
+func (x *Consumption) GetConsumed() map[string]uint64 {
+	if x != nil {
+		return x.Consumed
+	}
+	return nil
+}
+
+func (x *Consumption) GetResourceType() enums.Resource_Type {
+	if x != nil {
+		return x.ResourceType
+	}
+	return enums.Resource_UNKNOWN_TYPE
+}
+
+func (x *Consumption) GetResourceMode() enums.Resource_Mode {
+	if x != nil {
+		return x.ResourceMode
+	}
+	return enums.Resource_UNKNOWN_MODE
+}
+
 type AllocatePartyResourceResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -183,7 +301,7 @@ type AllocatePartyResourceResponse struct {
 func (x *AllocatePartyResourceResponse) Reset() {
 	*x = AllocatePartyResourceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[2]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -196,7 +314,7 @@ func (x *AllocatePartyResourceResponse) String() string {
 func (*AllocatePartyResourceResponse) ProtoMessage() {}
 
 func (x *AllocatePartyResourceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[2]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -209,7 +327,7 @@ func (x *AllocatePartyResourceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AllocatePartyResourceResponse.ProtoReflect.Descriptor instead.
 func (*AllocatePartyResourceResponse) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{2}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AllocatePartyResourceResponse) GetOperator() *Operator {
@@ -238,7 +356,7 @@ type ReleasePartyResourceRequest struct {
 func (x *ReleasePartyResourceRequest) Reset() {
 	*x = ReleasePartyResourceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[3]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -251,7 +369,7 @@ func (x *ReleasePartyResourceRequest) String() string {
 func (*ReleasePartyResourceRequest) ProtoMessage() {}
 
 func (x *ReleasePartyResourceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[3]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -264,7 +382,7 @@ func (x *ReleasePartyResourceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReleasePartyResourceRequest.ProtoReflect.Descriptor instead.
 func (*ReleasePartyResourceRequest) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{3}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ReleasePartyResourceRequest) GetBlockId() *protobuf.BlockID {
@@ -294,7 +412,7 @@ type DeployPartyResourceRequest struct {
 func (x *DeployPartyResourceRequest) Reset() {
 	*x = DeployPartyResourceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[4]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -307,7 +425,7 @@ func (x *DeployPartyResourceRequest) String() string {
 func (*DeployPartyResourceRequest) ProtoMessage() {}
 
 func (x *DeployPartyResourceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[4]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -320,7 +438,7 @@ func (x *DeployPartyResourceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeployPartyResourceRequest.ProtoReflect.Descriptor instead.
 func (*DeployPartyResourceRequest) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{4}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeployPartyResourceRequest) GetBlockId() *protobuf.BlockID {
@@ -355,7 +473,7 @@ type DeployPartyResourceResponse struct {
 func (x *DeployPartyResourceResponse) Reset() {
 	*x = DeployPartyResourceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[5]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -368,7 +486,7 @@ func (x *DeployPartyResourceResponse) String() string {
 func (*DeployPartyResourceResponse) ProtoMessage() {}
 
 func (x *DeployPartyResourceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[5]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +499,7 @@ func (x *DeployPartyResourceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeployPartyResourceResponse.ProtoReflect.Descriptor instead.
 func (*DeployPartyResourceResponse) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{5}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *DeployPartyResourceResponse) GetOperator() *Operator {
@@ -403,7 +521,7 @@ type GetPartyResourceStatusRequest struct {
 func (x *GetPartyResourceStatusRequest) Reset() {
 	*x = GetPartyResourceStatusRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[6]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -416,7 +534,7 @@ func (x *GetPartyResourceStatusRequest) String() string {
 func (*GetPartyResourceStatusRequest) ProtoMessage() {}
 
 func (x *GetPartyResourceStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[6]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +547,7 @@ func (x *GetPartyResourceStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPartyResourceStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetPartyResourceStatusRequest) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{6}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetPartyResourceStatusRequest) GetBlockId() *protobuf.BlockID {
@@ -457,7 +575,7 @@ type GetPartyResourceStatusResponse struct {
 func (x *GetPartyResourceStatusResponse) Reset() {
 	*x = GetPartyResourceStatusResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[7]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -470,7 +588,7 @@ func (x *GetPartyResourceStatusResponse) String() string {
 func (*GetPartyResourceStatusResponse) ProtoMessage() {}
 
 func (x *GetPartyResourceStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[7]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +601,7 @@ func (x *GetPartyResourceStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPartyResourceStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetPartyResourceStatusResponse) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{7}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetPartyResourceStatusResponse) GetOperator() *Operator {
@@ -507,7 +625,7 @@ type UpdatePartyResourceStatusRequest struct {
 func (x *UpdatePartyResourceStatusRequest) Reset() {
 	*x = UpdatePartyResourceStatusRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[8]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -520,7 +638,7 @@ func (x *UpdatePartyResourceStatusRequest) String() string {
 func (*UpdatePartyResourceStatusRequest) ProtoMessage() {}
 
 func (x *UpdatePartyResourceStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[8]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -533,7 +651,7 @@ func (x *UpdatePartyResourceStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePartyResourceStatusRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePartyResourceStatusRequest) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{8}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdatePartyResourceStatusRequest) GetBlockId() *protobuf.BlockID {
@@ -577,7 +695,7 @@ type FinishPartyBlockRequest struct {
 func (x *FinishPartyBlockRequest) Reset() {
 	*x = FinishPartyBlockRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[9]
+		mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -590,7 +708,7 @@ func (x *FinishPartyBlockRequest) String() string {
 func (*FinishPartyBlockRequest) ProtoMessage() {}
 
 func (x *FinishPartyBlockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[9]
+	mi := &file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -603,7 +721,7 @@ func (x *FinishPartyBlockRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinishPartyBlockRequest.ProtoReflect.Descriptor instead.
 func (*FinishPartyBlockRequest) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{9}
+	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *FinishPartyBlockRequest) GetBlockId() *protobuf.BlockID {
@@ -665,7 +783,42 @@ var file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDesc = []b
 	0x6f, 0x72, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x67, 0x72, 0x70, 0x63, 0x5f, 0x70, 0x6f, 0x72, 0x74,
 	0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x08, 0x67, 0x72, 0x70, 0x63, 0x50, 0x6f, 0x72, 0x74,
 	0x12, 0x14, 0x0a, 0x05, 0x72, 0x65, 0x61, 0x64, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x05, 0x72, 0x65, 0x61, 0x64, 0x79, 0x22, 0xb6, 0x01, 0x0a, 0x1d, 0x41, 0x6c, 0x6c, 0x6f, 0x63,
+	0x05, 0x72, 0x65, 0x61, 0x64, 0x79, 0x22, 0xd5, 0x01, 0x0a, 0x13, 0x50, 0x61, 0x72, 0x74, 0x79,
+	0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x58,
+	0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x40,
+	0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x70,
+	0x6c, 0x61, 0x74, 0x66, 0x6f, 0x72, 0x6d, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x2e, 0x50, 0x61, 0x72, 0x74, 0x79, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x53, 0x74,
+	0x61, 0x74, 0x75, 0x73, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79,
+	0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x1a, 0x64, 0x0a, 0x0b, 0x53, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x3f, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x70, 0x6c, 0x61, 0x74, 0x66, 0x6f, 0x72,
+	0x6d, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x4f, 0x70, 0x65, 0x72, 0x61,
+	0x74, 0x6f, 0x72, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xd5,
+	0x02, 0x0a, 0x0b, 0x43, 0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1f,
+	0x0a, 0x0b, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x0a, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x49, 0x64, 0x12,
+	0x56, 0x0a, 0x08, 0x63, 0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x65, 0x64, 0x18, 0x02, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x3a, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
+	0x66, 0x2e, 0x70, 0x6c, 0x61, 0x74, 0x66, 0x6f, 0x72, 0x6d, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
+	0x43, 0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x65, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x63,
+	0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x65, 0x64, 0x12, 0x47, 0x0a, 0x0d, 0x72, 0x65, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x22,
+	0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x65,
+	0x6e, 0x75, 0x6d, 0x73, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x54, 0x79,
+	0x70, 0x65, 0x52, 0x0c, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65,
+	0x12, 0x47, 0x0a, 0x0d, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x6d, 0x6f, 0x64,
+	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x22, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x65, 0x6e, 0x75, 0x6d, 0x73, 0x2e, 0x52, 0x65,
+	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x4d, 0x6f, 0x64, 0x65, 0x52, 0x0c, 0x72, 0x65, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x4d, 0x6f, 0x64, 0x65, 0x1a, 0x3b, 0x0a, 0x0d, 0x43, 0x6f, 0x6e,
+	0x73, 0x75, 0x6d, 0x65, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65,
+	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xb6, 0x01, 0x0a, 0x1d, 0x41, 0x6c, 0x6c, 0x6f, 0x63,
 	0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x74, 0x79, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x45, 0x0a, 0x08, 0x6f, 0x70, 0x65, 0x72,
 	0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x73, 0x75, 0x64,
@@ -775,50 +928,60 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescGZIP(
 	return file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDescData
 }
 
-var file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_goTypes = []interface{}{
 	(*AllocatePartyResourceRequest)(nil),     // 0: sudo.protobuf.platform.resource.AllocatePartyResourceRequest
 	(*Operator)(nil),                         // 1: sudo.protobuf.platform.resource.Operator
-	(*AllocatePartyResourceResponse)(nil),    // 2: sudo.protobuf.platform.resource.AllocatePartyResourceResponse
-	(*ReleasePartyResourceRequest)(nil),      // 3: sudo.protobuf.platform.resource.ReleasePartyResourceRequest
-	(*DeployPartyResourceRequest)(nil),       // 4: sudo.protobuf.platform.resource.DeployPartyResourceRequest
-	(*DeployPartyResourceResponse)(nil),      // 5: sudo.protobuf.platform.resource.DeployPartyResourceResponse
-	(*GetPartyResourceStatusRequest)(nil),    // 6: sudo.protobuf.platform.resource.GetPartyResourceStatusRequest
-	(*GetPartyResourceStatusResponse)(nil),   // 7: sudo.protobuf.platform.resource.GetPartyResourceStatusResponse
-	(*UpdatePartyResourceStatusRequest)(nil), // 8: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest
-	(*FinishPartyBlockRequest)(nil),          // 9: sudo.protobuf.platform.resource.FinishPartyBlockRequest
-	(*protobuf.BlockID)(nil),                 // 10: sudo.protobuf.infra_adapter.BlockID
-	(enums.Resource_Type)(0),                 // 11: sudo.protobuf.enums.Resource.Type
-	(*common.ResourceRequirement)(nil),       // 12: common.ResourceRequirement
-	(enums.Job_BlockScheduleStatus)(0),       // 13: sudo.protobuf.enums.Job.BlockScheduleStatus
-	(enums.Dag_Job_Status)(0),                // 14: sudo.protobuf.enums.Dag.Job.Status
+	(*PartyResourceStatus)(nil),              // 2: sudo.protobuf.platform.resource.PartyResourceStatus
+	(*Consumption)(nil),                      // 3: sudo.protobuf.platform.resource.Consumption
+	(*AllocatePartyResourceResponse)(nil),    // 4: sudo.protobuf.platform.resource.AllocatePartyResourceResponse
+	(*ReleasePartyResourceRequest)(nil),      // 5: sudo.protobuf.platform.resource.ReleasePartyResourceRequest
+	(*DeployPartyResourceRequest)(nil),       // 6: sudo.protobuf.platform.resource.DeployPartyResourceRequest
+	(*DeployPartyResourceResponse)(nil),      // 7: sudo.protobuf.platform.resource.DeployPartyResourceResponse
+	(*GetPartyResourceStatusRequest)(nil),    // 8: sudo.protobuf.platform.resource.GetPartyResourceStatusRequest
+	(*GetPartyResourceStatusResponse)(nil),   // 9: sudo.protobuf.platform.resource.GetPartyResourceStatusResponse
+	(*UpdatePartyResourceStatusRequest)(nil), // 10: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest
+	(*FinishPartyBlockRequest)(nil),          // 11: sudo.protobuf.platform.resource.FinishPartyBlockRequest
+	nil,                                      // 12: sudo.protobuf.platform.resource.PartyResourceStatus.StatusEntry
+	nil,                                      // 13: sudo.protobuf.platform.resource.Consumption.ConsumedEntry
+	(*protobuf.BlockID)(nil),                 // 14: sudo.protobuf.infra_adapter.BlockID
+	(enums.Resource_Type)(0),                 // 15: sudo.protobuf.enums.Resource.Type
+	(*common.ResourceRequirement)(nil),       // 16: common.ResourceRequirement
+	(enums.Resource_Mode)(0),                 // 17: sudo.protobuf.enums.Resource.Mode
+	(enums.Job_BlockScheduleStatus)(0),       // 18: sudo.protobuf.enums.Job.BlockScheduleStatus
+	(enums.Dag_Job_Status)(0),                // 19: sudo.protobuf.enums.Dag.Job.Status
 }
 var file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_depIdxs = []int32{
-	10, // 0: sudo.protobuf.platform.resource.AllocatePartyResourceRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	11, // 1: sudo.protobuf.platform.resource.AllocatePartyResourceRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
-	12, // 2: sudo.protobuf.platform.resource.AllocatePartyResourceRequest.resource_requirement:type_name -> common.ResourceRequirement
-	1,  // 3: sudo.protobuf.platform.resource.AllocatePartyResourceResponse.operator:type_name -> sudo.protobuf.platform.resource.Operator
-	12, // 4: sudo.protobuf.platform.resource.AllocatePartyResourceResponse.resource_requirement:type_name -> common.ResourceRequirement
-	10, // 5: sudo.protobuf.platform.resource.ReleasePartyResourceRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	11, // 6: sudo.protobuf.platform.resource.ReleasePartyResourceRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
-	10, // 7: sudo.protobuf.platform.resource.DeployPartyResourceRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	11, // 8: sudo.protobuf.platform.resource.DeployPartyResourceRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
-	12, // 9: sudo.protobuf.platform.resource.DeployPartyResourceRequest.resource_requirement:type_name -> common.ResourceRequirement
-	1,  // 10: sudo.protobuf.platform.resource.DeployPartyResourceResponse.operator:type_name -> sudo.protobuf.platform.resource.Operator
-	10, // 11: sudo.protobuf.platform.resource.GetPartyResourceStatusRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	11, // 12: sudo.protobuf.platform.resource.GetPartyResourceStatusRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
-	1,  // 13: sudo.protobuf.platform.resource.GetPartyResourceStatusResponse.operator:type_name -> sudo.protobuf.platform.resource.Operator
-	10, // 14: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	1,  // 15: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.operator:type_name -> sudo.protobuf.platform.resource.Operator
-	13, // 16: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.block_schedule_status:type_name -> sudo.protobuf.enums.Job.BlockScheduleStatus
-	14, // 17: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.block_status:type_name -> sudo.protobuf.enums.Dag.Job.Status
-	10, // 18: sudo.protobuf.platform.resource.FinishPartyBlockRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	14, // 19: sudo.protobuf.platform.resource.FinishPartyBlockRequest.final_status:type_name -> sudo.protobuf.enums.Dag.Job.Status
-	20, // [20:20] is the sub-list for method output_type
-	20, // [20:20] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	14, // 0: sudo.protobuf.platform.resource.AllocatePartyResourceRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
+	15, // 1: sudo.protobuf.platform.resource.AllocatePartyResourceRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
+	16, // 2: sudo.protobuf.platform.resource.AllocatePartyResourceRequest.resource_requirement:type_name -> common.ResourceRequirement
+	12, // 3: sudo.protobuf.platform.resource.PartyResourceStatus.status:type_name -> sudo.protobuf.platform.resource.PartyResourceStatus.StatusEntry
+	13, // 4: sudo.protobuf.platform.resource.Consumption.consumed:type_name -> sudo.protobuf.platform.resource.Consumption.ConsumedEntry
+	15, // 5: sudo.protobuf.platform.resource.Consumption.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
+	17, // 6: sudo.protobuf.platform.resource.Consumption.resource_mode:type_name -> sudo.protobuf.enums.Resource.Mode
+	1,  // 7: sudo.protobuf.platform.resource.AllocatePartyResourceResponse.operator:type_name -> sudo.protobuf.platform.resource.Operator
+	16, // 8: sudo.protobuf.platform.resource.AllocatePartyResourceResponse.resource_requirement:type_name -> common.ResourceRequirement
+	14, // 9: sudo.protobuf.platform.resource.ReleasePartyResourceRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
+	15, // 10: sudo.protobuf.platform.resource.ReleasePartyResourceRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
+	14, // 11: sudo.protobuf.platform.resource.DeployPartyResourceRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
+	15, // 12: sudo.protobuf.platform.resource.DeployPartyResourceRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
+	16, // 13: sudo.protobuf.platform.resource.DeployPartyResourceRequest.resource_requirement:type_name -> common.ResourceRequirement
+	1,  // 14: sudo.protobuf.platform.resource.DeployPartyResourceResponse.operator:type_name -> sudo.protobuf.platform.resource.Operator
+	14, // 15: sudo.protobuf.platform.resource.GetPartyResourceStatusRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
+	15, // 16: sudo.protobuf.platform.resource.GetPartyResourceStatusRequest.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
+	1,  // 17: sudo.protobuf.platform.resource.GetPartyResourceStatusResponse.operator:type_name -> sudo.protobuf.platform.resource.Operator
+	14, // 18: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
+	1,  // 19: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.operator:type_name -> sudo.protobuf.platform.resource.Operator
+	18, // 20: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.block_schedule_status:type_name -> sudo.protobuf.enums.Job.BlockScheduleStatus
+	19, // 21: sudo.protobuf.platform.resource.UpdatePartyResourceStatusRequest.block_status:type_name -> sudo.protobuf.enums.Dag.Job.Status
+	14, // 22: sudo.protobuf.platform.resource.FinishPartyBlockRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
+	19, // 23: sudo.protobuf.platform.resource.FinishPartyBlockRequest.final_status:type_name -> sudo.protobuf.enums.Dag.Job.Status
+	1,  // 24: sudo.protobuf.platform.resource.PartyResourceStatus.StatusEntry.value:type_name -> sudo.protobuf.platform.resource.Operator
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() }
@@ -852,7 +1015,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AllocatePartyResourceResponse); i {
+			switch v := v.(*PartyResourceStatus); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -864,7 +1027,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ReleasePartyResourceRequest); i {
+			switch v := v.(*Consumption); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -876,7 +1039,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeployPartyResourceRequest); i {
+			switch v := v.(*AllocatePartyResourceResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -888,7 +1051,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeployPartyResourceResponse); i {
+			switch v := v.(*ReleasePartyResourceRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -900,7 +1063,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetPartyResourceStatusRequest); i {
+			switch v := v.(*DeployPartyResourceRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -912,7 +1075,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetPartyResourceStatusResponse); i {
+			switch v := v.(*DeployPartyResourceResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -924,7 +1087,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdatePartyResourceStatusRequest); i {
+			switch v := v.(*GetPartyResourceStatusRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -936,6 +1099,30 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			}
 		}
 		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetPartyResourceStatusResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdatePartyResourceStatusRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FinishPartyBlockRequest); i {
 			case 0:
 				return &v.state
@@ -954,7 +1141,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_sudo_protobuf_mpc_virtual_service_platform_resource_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

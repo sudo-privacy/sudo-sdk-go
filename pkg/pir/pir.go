@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service/enums"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/apiusage"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/pir"
+	basic_api_usage "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/api_usage"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir"
 )
 
 // Factory 是对 [sudoclient.SudoClient] 的简单封装，提供创建pir Server/Client方法。
@@ -287,12 +287,15 @@ func NewManager(factory Factory) *Manager {
 }
 
 // UpsertUsageNotifyReceiver 是对 grpc 接口的简单封装。
-func (m *Manager) UpsertUsageNotifyReceiver(ctx context.Context, req *apiusage.UpsertAPIUsageReceiverRequest) error {
+func (m *Manager) UpsertUsageNotifyReceiver(
+	ctx context.Context,
+	req *basic_api_usage.UpsertAPIUsageReceiverRequest,
+) error {
 	resp, err := m.SudoClient.UpsertUsageNotifyReceiver(ctx, req)
 	if err != nil {
 		return err
 	}
-	if resp.Status != apiusage.UpsertAPIUsageReceiverResponse_SUCCESS {
+	if resp.Status != basic_api_usage.UpsertAPIUsageReceiverResponse_SUCCESS {
 		return status.Error(codes.Internal, resp.Msg)
 	}
 	return nil
@@ -301,8 +304,8 @@ func (m *Manager) UpsertUsageNotifyReceiver(ctx context.Context, req *apiusage.U
 // ListAPIUsages 是对grpc接口的简单封装。
 func (m *Manager) ListAPIUsages(
 	ctx context.Context,
-	req *apiusage.ListAPIUsagesRequest,
-) (*apiusage.ListAPIUsagesResponse, error) {
+	req *basic_api_usage.ListAPIUsagesRequest,
+) (*basic_api_usage.ListAPIUsagesResponse, error) {
 	return m.SudoClient.ListAPIUsages(ctx, req)
 }
 
