@@ -13,6 +13,7 @@ import (
 	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
 	basic_api_usage "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/api_usage"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir"
 )
 
@@ -94,7 +95,11 @@ func (f *Factory) CreatePirServer(
 	indiscernibilityDegree uint64,
 ) (*Server, error) {
 	getPirServersResp, err := f.GetPirServerServices(ctx, &pir.GetServerServicesRequest{
-		Query: &pir.ServerQueryOption{},
+		Query: &pir.ServerQueryOption{
+			Paginator: &paginator.Paginator{
+				NotPaging: true,
+			},
+		},
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "list pirServer failed")
