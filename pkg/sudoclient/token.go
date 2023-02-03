@@ -15,7 +15,7 @@ import (
 	basiccommon "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
 )
 
-// TokenSource 是对 [credentials.PerRPCCredentials]的简单封装，每次访问可能触发token刷新。
+// TokenSource 是对 [credentials.PerRPCCredentials] 的简单封装，每次访问可能触发token刷新。
 type TokenSource interface {
 	credentials.PerRPCCredentials
 	Close() error
