@@ -4394,6 +4394,8 @@ type OnlineBlock struct {
 	ResultMemoryKey map[string]*OnlineParamKey `protobuf:"bytes,5,rep,name=result_memory_key,json=resultMemoryKey,proto3" json:"result_memory_key,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	EnableProtectId bool                       `protobuf:"varint,6,opt,name=enable_protect_id,json=enableProtectId,proto3" json:"enable_protect_id,omitempty"`
 	TripletsBitInfo enums.TripletsBitInfo_Type `protobuf:"varint,7,opt,name=triplets_bit_info,json=tripletsBitInfo,proto3,enum=sudo.protobuf.enums.TripletsBitInfo_Type" json:"triplets_bit_info,omitempty"`
+	// 预测数据表的哈希分桶请求
+	TableHashBucketReq *TableHashBucketRequest `protobuf:"bytes,8,opt,name=table_hash_bucket_req,json=tableHashBucketReq,proto3" json:"table_hash_bucket_req,omitempty"`
 }
 
 func (x *OnlineBlock) Reset() {
@@ -4477,6 +4479,102 @@ func (x *OnlineBlock) GetTripletsBitInfo() enums.TripletsBitInfo_Type {
 	return enums.TripletsBitInfo_DEFAULT
 }
 
+func (x *OnlineBlock) GetTableHashBucketReq() *TableHashBucketRequest {
+	if x != nil {
+		return x.TableHashBucketReq
+	}
+	return nil
+}
+
+type TableHashBucketRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ServiceId uint64 `protobuf:"varint,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	// selected_cols include [key_columns, ..value_columns]
+	// pass ["*"] is ok
+	DbTable        *infra_adapter.DataLocation_DB `protobuf:"bytes,2,opt,name=db_table,json=dbTable,proto3" json:"db_table,omitempty"`
+	KeyColumn      string                         `protobuf:"bytes,3,opt,name=key_column,json=keyColumn,proto3" json:"key_column,omitempty"`
+	StorageTable   *infra_adapter.DataLocation_DB `protobuf:"bytes,4,opt,name=storage_table,json=storageTable,proto3" json:"storage_table,omitempty"`
+	BucketCount    uint64                         `protobuf:"varint,5,opt,name=bucket_count,json=bucketCount,proto3" json:"bucket_count,omitempty"`
+	PartitionCount uint64                         `protobuf:"varint,6,opt,name=partition_count,json=partitionCount,proto3" json:"partition_count,omitempty"`
+}
+
+func (x *TableHashBucketRequest) Reset() {
+	*x = TableHashBucketRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[69]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TableHashBucketRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TableHashBucketRequest) ProtoMessage() {}
+
+func (x *TableHashBucketRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[69]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TableHashBucketRequest.ProtoReflect.Descriptor instead.
+func (*TableHashBucketRequest) Descriptor() ([]byte, []int) {
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *TableHashBucketRequest) GetServiceId() uint64 {
+	if x != nil {
+		return x.ServiceId
+	}
+	return 0
+}
+
+func (x *TableHashBucketRequest) GetDbTable() *infra_adapter.DataLocation_DB {
+	if x != nil {
+		return x.DbTable
+	}
+	return nil
+}
+
+func (x *TableHashBucketRequest) GetKeyColumn() string {
+	if x != nil {
+		return x.KeyColumn
+	}
+	return ""
+}
+
+func (x *TableHashBucketRequest) GetStorageTable() *infra_adapter.DataLocation_DB {
+	if x != nil {
+		return x.StorageTable
+	}
+	return nil
+}
+
+func (x *TableHashBucketRequest) GetBucketCount() uint64 {
+	if x != nil {
+		return x.BucketCount
+	}
+	return 0
+}
+
+func (x *TableHashBucketRequest) GetPartitionCount() uint64 {
+	if x != nil {
+		return x.PartitionCount
+	}
+	return 0
+}
+
 type OnlineOperatorConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4492,7 +4590,7 @@ type OnlineOperatorConfig struct {
 func (x *OnlineOperatorConfig) Reset() {
 	*x = OnlineOperatorConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[69]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[70]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4505,7 +4603,7 @@ func (x *OnlineOperatorConfig) String() string {
 func (*OnlineOperatorConfig) ProtoMessage() {}
 
 func (x *OnlineOperatorConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[69]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[70]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4518,7 +4616,7 @@ func (x *OnlineOperatorConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnlineOperatorConfig.ProtoReflect.Descriptor instead.
 func (*OnlineOperatorConfig) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{69}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *OnlineOperatorConfig) GetStageName() string {
@@ -4561,7 +4659,7 @@ type OnlineParticipant struct {
 func (x *OnlineParticipant) Reset() {
 	*x = OnlineParticipant{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[70]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[71]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4574,7 +4672,7 @@ func (x *OnlineParticipant) String() string {
 func (*OnlineParticipant) ProtoMessage() {}
 
 func (x *OnlineParticipant) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[70]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[71]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4587,7 +4685,7 @@ func (x *OnlineParticipant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnlineParticipant.ProtoReflect.Descriptor instead.
 func (*OnlineParticipant) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{70}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *OnlineParticipant) GetPartyId() string {
@@ -4618,7 +4716,7 @@ type OnlineInput struct {
 func (x *OnlineInput) Reset() {
 	*x = OnlineInput{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[71]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[72]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4631,7 +4729,7 @@ func (x *OnlineInput) String() string {
 func (*OnlineInput) ProtoMessage() {}
 
 func (x *OnlineInput) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[71]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[72]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4644,7 +4742,7 @@ func (x *OnlineInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnlineInput.ProtoReflect.Descriptor instead.
 func (*OnlineInput) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{71}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{72}
 }
 
 func (m *OnlineInput) GetLocation() isOnlineInput_Location {
@@ -4695,7 +4793,7 @@ type UpdateOperatorSchemasRequest struct {
 func (x *UpdateOperatorSchemasRequest) Reset() {
 	*x = UpdateOperatorSchemasRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[72]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[73]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4708,7 +4806,7 @@ func (x *UpdateOperatorSchemasRequest) String() string {
 func (*UpdateOperatorSchemasRequest) ProtoMessage() {}
 
 func (x *UpdateOperatorSchemasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[72]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[73]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4721,7 +4819,7 @@ func (x *UpdateOperatorSchemasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateOperatorSchemasRequest.ProtoReflect.Descriptor instead.
 func (*UpdateOperatorSchemasRequest) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{72}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *UpdateOperatorSchemasRequest) GetOperators() []*OperatorSchema {
@@ -4746,7 +4844,7 @@ type DescTableResponse_TableFieldMetaInfo struct {
 func (x *DescTableResponse_TableFieldMetaInfo) Reset() {
 	*x = DescTableResponse_TableFieldMetaInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[76]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[77]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4759,7 +4857,7 @@ func (x *DescTableResponse_TableFieldMetaInfo) String() string {
 func (*DescTableResponse_TableFieldMetaInfo) ProtoMessage() {}
 
 func (x *DescTableResponse_TableFieldMetaInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[76]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[77]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4826,7 +4924,7 @@ type WalkDirResponse_NodeMetaInfo struct {
 func (x *WalkDirResponse_NodeMetaInfo) Reset() {
 	*x = WalkDirResponse_NodeMetaInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[77]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[78]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4839,7 +4937,7 @@ func (x *WalkDirResponse_NodeMetaInfo) String() string {
 func (*WalkDirResponse_NodeMetaInfo) ProtoMessage() {}
 
 func (x *WalkDirResponse_NodeMetaInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[77]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[78]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4899,7 +4997,7 @@ type UpdateDataSourceRequest_DataSource struct {
 func (x *UpdateDataSourceRequest_DataSource) Reset() {
 	*x = UpdateDataSourceRequest_DataSource{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[78]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[79]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4912,7 +5010,7 @@ func (x *UpdateDataSourceRequest_DataSource) String() string {
 func (*UpdateDataSourceRequest_DataSource) ProtoMessage() {}
 
 func (x *UpdateDataSourceRequest_DataSource) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[78]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[79]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4962,7 +5060,7 @@ type UpdateDataSourceResponse_DatasourceRes struct {
 func (x *UpdateDataSourceResponse_DatasourceRes) Reset() {
 	*x = UpdateDataSourceResponse_DatasourceRes{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[79]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[80]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4975,7 +5073,7 @@ func (x *UpdateDataSourceResponse_DatasourceRes) String() string {
 func (*UpdateDataSourceResponse_DatasourceRes) ProtoMessage() {}
 
 func (x *UpdateDataSourceResponse_DatasourceRes) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[79]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[80]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5016,7 +5114,7 @@ type GetFurnaceConfigResponse_Resource struct {
 func (x *GetFurnaceConfigResponse_Resource) Reset() {
 	*x = GetFurnaceConfigResponse_Resource{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[80]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[81]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5029,7 +5127,7 @@ func (x *GetFurnaceConfigResponse_Resource) String() string {
 func (*GetFurnaceConfigResponse_Resource) ProtoMessage() {}
 
 func (x *GetFurnaceConfigResponse_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[80]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[81]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5063,7 +5161,7 @@ type UpdateBlockInfoRequest_OperatorStatus struct {
 func (x *UpdateBlockInfoRequest_OperatorStatus) Reset() {
 	*x = UpdateBlockInfoRequest_OperatorStatus{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[81]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[82]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5076,7 +5174,7 @@ func (x *UpdateBlockInfoRequest_OperatorStatus) String() string {
 func (*UpdateBlockInfoRequest_OperatorStatus) ProtoMessage() {}
 
 func (x *UpdateBlockInfoRequest_OperatorStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[81]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[82]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5115,7 +5213,7 @@ type OnlineParticipant_OnlineLocation struct {
 func (x *OnlineParticipant_OnlineLocation) Reset() {
 	*x = OnlineParticipant_OnlineLocation{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[85]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[86]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5128,7 +5226,7 @@ func (x *OnlineParticipant_OnlineLocation) String() string {
 func (*OnlineParticipant_OnlineLocation) ProtoMessage() {}
 
 func (x *OnlineParticipant_OnlineLocation) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[85]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[86]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5141,7 +5239,7 @@ func (x *OnlineParticipant_OnlineLocation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnlineParticipant_OnlineLocation.ProtoReflect.Descriptor instead.
 func (*OnlineParticipant_OnlineLocation) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{70, 0}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{71, 0}
 }
 
 func (m *OnlineParticipant_OnlineLocation) GetLocation() isOnlineParticipant_OnlineLocation_Location {
@@ -5220,7 +5318,7 @@ type OnlineInput_TableRow struct {
 func (x *OnlineInput_TableRow) Reset() {
 	*x = OnlineInput_TableRow{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[87]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[88]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5233,7 +5331,7 @@ func (x *OnlineInput_TableRow) String() string {
 func (*OnlineInput_TableRow) ProtoMessage() {}
 
 func (x *OnlineInput_TableRow) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[87]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[88]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5246,7 +5344,7 @@ func (x *OnlineInput_TableRow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnlineInput_TableRow.ProtoReflect.Descriptor instead.
 func (*OnlineInput_TableRow) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{71, 0}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{72, 0}
 }
 
 func (x *OnlineInput_TableRow) GetDatasourceName() string {
@@ -5282,7 +5380,7 @@ type OnlineInput_Constants struct {
 func (x *OnlineInput_Constants) Reset() {
 	*x = OnlineInput_Constants{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[88]
+		mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[89]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5295,7 +5393,7 @@ func (x *OnlineInput_Constants) String() string {
 func (*OnlineInput_Constants) ProtoMessage() {}
 
 func (x *OnlineInput_Constants) ProtoReflect() protoreflect.Message {
-	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[88]
+	mi := &file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[89]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5308,7 +5406,7 @@ func (x *OnlineInput_Constants) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnlineInput_Constants.ProtoReflect.Descriptor instead.
 func (*OnlineInput_Constants) Descriptor() ([]byte, []int) {
-	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{71, 1}
+	return file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP(), []int{72, 1}
 }
 
 func (x *OnlineInput_Constants) GetHeader() []string {
@@ -5976,8 +6074,8 @@ var file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDesc = []byte{
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x2e,
 	0x0a, 0x0d, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x49, 0x64, 0x12,
 	0x1d, 0x0a, 0x0a, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x04, 0x52, 0x09, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x49, 0x64, 0x22, 0xc0,
-	0x04, 0x0a, 0x0b, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x1d,
+	0x01, 0x28, 0x04, 0x52, 0x09, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x49, 0x64, 0x22, 0xa8,
+	0x05, 0x0a, 0x0b, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x1d,
 	0x0a, 0x0a, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x04, 0x52, 0x09, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x49, 0x64, 0x12, 0x19, 0x0a,
 	0x08, 0x70, 0x61, 0x72, 0x74, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
@@ -6006,94 +6104,122 @@ var file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDesc = []byte{
 	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x65, 0x6e, 0x75, 0x6d, 0x73, 0x2e, 0x54, 0x72, 0x69, 0x70, 0x6c,
 	0x65, 0x74, 0x73, 0x42, 0x69, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x54, 0x79, 0x70, 0x65, 0x52,
 	0x0f, 0x74, 0x72, 0x69, 0x70, 0x6c, 0x65, 0x74, 0x73, 0x42, 0x69, 0x74, 0x49, 0x6e, 0x66, 0x6f,
-	0x1a, 0x6f, 0x0a, 0x14, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x4d, 0x65, 0x6d, 0x6f, 0x72, 0x79,
-	0x4b, 0x65, 0x79, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x41, 0x0a, 0x05, 0x76, 0x61,
-	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x73, 0x75, 0x64, 0x6f,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f,
-	0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x4b, 0x65, 0x79, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
-	0x01, 0x22, 0xc3, 0x01, 0x0a, 0x14, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x4f, 0x70, 0x65, 0x72,
-	0x61, 0x74, 0x6f, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74,
-	0x61, 0x67, 0x65, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
-	0x73, 0x74, 0x61, 0x67, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61,
-	0x67, 0x65, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73,
-	0x74, 0x61, 0x67, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x48, 0x0a, 0x07, 0x70, 0x61, 0x72, 0x74,
-	0x69, 0x65, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x73, 0x75, 0x64, 0x6f,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f,
-	0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61,
-	0x72, 0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x52, 0x07, 0x70, 0x61, 0x72, 0x74, 0x69,
-	0x65, 0x73, 0x12, 0x23, 0x0a, 0x0d, 0x67, 0x6c, 0x6f, 0x62, 0x61, 0x6c, 0x5f, 0x63, 0x6f, 0x6e,
-	0x66, 0x69, 0x67, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x67, 0x6c, 0x6f, 0x62, 0x61,
-	0x6c, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x22, 0xaf, 0x04, 0x0a, 0x11, 0x4f, 0x6e, 0x6c, 0x69,
-	0x6e, 0x65, 0x50, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x12, 0x19, 0x0a,
-	0x08, 0x70, 0x61, 0x72, 0x74, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x07, 0x70, 0x61, 0x72, 0x74, 0x79, 0x49, 0x64, 0x12, 0x52, 0x0a, 0x06, 0x69, 0x6e, 0x70, 0x75,
-	0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3a, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61,
-	0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72,
-	0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x2e, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x73, 0x45,
-	0x6e, 0x74, 0x72, 0x79, 0x52, 0x06, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x73, 0x1a, 0xb0, 0x02, 0x0a,
-	0x0e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12,
-	0x4e, 0x0a, 0x07, 0x70, 0x72, 0x65, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
-	0x32, 0x32, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
-	0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x6c,
-	0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x4c, 0x6f, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x07, 0x70, 0x72, 0x65, 0x6c, 0x6f, 0x61, 0x64, 0x12,
-	0x49, 0x0a, 0x08, 0x75, 0x70, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x12, 0x66, 0x0a, 0x15, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x5f, 0x68, 0x61, 0x73, 0x68, 0x5f, 0x62,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x5f, 0x72, 0x65, 0x71, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x33, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x54, 0x61,
+	0x62, 0x6c, 0x65, 0x48, 0x61, 0x73, 0x68, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x52, 0x12, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x48, 0x61, 0x73, 0x68, 0x42,
+	0x75, 0x63, 0x6b, 0x65, 0x74, 0x52, 0x65, 0x71, 0x1a, 0x6f, 0x0a, 0x14, 0x52, 0x65, 0x73, 0x75,
+	0x6c, 0x74, 0x4d, 0x65, 0x6d, 0x6f, 0x72, 0x79, 0x4b, 0x65, 0x79, 0x45, 0x6e, 0x74, 0x72, 0x79,
+	0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b,
+	0x65, 0x79, 0x12, 0x41, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x2b, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
 	0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e,
-	0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x4b, 0x65, 0x79, 0x48, 0x00,
-	0x52, 0x08, 0x75, 0x70, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x12, 0x42, 0x0a, 0x06, 0x6f, 0x6e,
-	0x6c, 0x69, 0x6e, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x73, 0x75, 0x64,
+	0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x4b, 0x65, 0x79, 0x52, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xd0, 0x02, 0x0a, 0x16, 0x54, 0x61,
+	0x62, 0x6c, 0x65, 0x48, 0x61, 0x73, 0x68, 0x42, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x49, 0x64, 0x12, 0x50, 0x0a, 0x08, 0x64, 0x62, 0x5f, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x35, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70,
+	0x74, 0x65, 0x72, 0x2e, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x44, 0x61, 0x74,
+	0x61, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x44, 0x42, 0x52, 0x07, 0x64, 0x62,
+	0x54, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x6b, 0x65, 0x79, 0x5f, 0x63, 0x6f, 0x6c,
+	0x75, 0x6d, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6b, 0x65, 0x79, 0x43, 0x6f,
+	0x6c, 0x75, 0x6d, 0x6e, 0x12, 0x5a, 0x0a, 0x0d, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x5f,
+	0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x35, 0x2e, 0x73, 0x75,
+	0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72,
+	0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
+	0x44, 0x42, 0x52, 0x0c, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x54, 0x61, 0x62, 0x6c, 0x65,
+	0x12, 0x21, 0x0a, 0x0c, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x5f, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x62, 0x75, 0x63, 0x6b, 0x65, 0x74, 0x43, 0x6f,
+	0x75, 0x6e, 0x74, 0x12, 0x27, 0x0a, 0x0f, 0x70, 0x61, 0x72, 0x74, 0x69, 0x74, 0x69, 0x6f, 0x6e,
+	0x5f, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0e, 0x70, 0x61,
+	0x72, 0x74, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0xc3, 0x01, 0x0a,
+	0x14, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x43,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x67, 0x65, 0x5f, 0x6e,
+	0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74, 0x61, 0x67, 0x65,
+	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x67, 0x65, 0x5f, 0x74, 0x79,
+	0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74, 0x61, 0x67, 0x65, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x48, 0x0a, 0x07, 0x70, 0x61, 0x72, 0x74, 0x69, 0x65, 0x73, 0x18, 0x03,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74,
+	0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69,
+	0x70, 0x61, 0x6e, 0x74, 0x52, 0x07, 0x70, 0x61, 0x72, 0x74, 0x69, 0x65, 0x73, 0x12, 0x23, 0x0a,
+	0x0d, 0x67, 0x6c, 0x6f, 0x62, 0x61, 0x6c, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x67, 0x6c, 0x6f, 0x62, 0x61, 0x6c, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x22, 0xaf, 0x04, 0x0a, 0x11, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72,
+	0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x12, 0x19, 0x0a, 0x08, 0x70, 0x61, 0x72, 0x74,
+	0x79, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x70, 0x61, 0x72, 0x74,
+	0x79, 0x49, 0x64, 0x12, 0x52, 0x0a, 0x06, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x3a, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65,
+	0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70,
+	0x61, 0x6e, 0x74, 0x2e, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52,
+	0x06, 0x69, 0x6e, 0x70, 0x75, 0x74, 0x73, 0x1a, 0xb0, 0x02, 0x0a, 0x0e, 0x4f, 0x6e, 0x6c, 0x69,
+	0x6e, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x4e, 0x0a, 0x07, 0x70, 0x72,
+	0x65, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x32, 0x2e, 0x73, 0x75,
+	0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72,
+	0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x48,
+	0x00, 0x52, 0x07, 0x70, 0x72, 0x65, 0x6c, 0x6f, 0x61, 0x64, 0x12, 0x49, 0x0a, 0x08, 0x75, 0x70,
+	0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x73,
+	0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66,
+	0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e,
+	0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x4b, 0x65, 0x79, 0x48, 0x00, 0x52, 0x08, 0x75, 0x70, 0x73,
+	0x74, 0x72, 0x65, 0x61, 0x6d, 0x12, 0x42, 0x0a, 0x06, 0x6f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70,
+	0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x48,
+	0x00, 0x52, 0x06, 0x6f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x12, 0x33, 0x0a, 0x08, 0x66, 0x72, 0x6f,
+	0x6d, 0x5f, 0x61, 0x70, 0x69, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d,
+	0x70, 0x74, 0x79, 0x48, 0x00, 0x52, 0x07, 0x66, 0x72, 0x6f, 0x6d, 0x41, 0x70, 0x69, 0x42, 0x0a,
+	0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x78, 0x0a, 0x0b, 0x49, 0x6e,
+	0x70, 0x75, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x53, 0x0a, 0x05, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x3d, 0x2e, 0x73, 0x75, 0x64,
 	0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61,
-	0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49,
-	0x6e, 0x70, 0x75, 0x74, 0x48, 0x00, 0x52, 0x06, 0x6f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x12, 0x33,
-	0x0a, 0x08, 0x66, 0x72, 0x6f, 0x6d, 0x5f, 0x61, 0x70, 0x69, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b,
-	0x32, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
-	0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x48, 0x00, 0x52, 0x07, 0x66, 0x72, 0x6f, 0x6d,
-	0x41, 0x70, 0x69, 0x42, 0x0a, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x1a,
-	0x78, 0x0a, 0x0b, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10,
-	0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79,
-	0x12, 0x53, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x3d, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
-	0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e,
-	0x6c, 0x69, 0x6e, 0x65, 0x50, 0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x2e,
-	0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x82, 0x03, 0x0a, 0x0b, 0x4f, 0x6e,
-	0x6c, 0x69, 0x6e, 0x65, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x12, 0x49, 0x0a, 0x05, 0x74, 0x61, 0x62,
-	0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e,
+	0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x50,
+	0x61, 0x72, 0x74, 0x69, 0x63, 0x69, 0x70, 0x61, 0x6e, 0x74, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e,
+	0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x3a, 0x02, 0x38, 0x01, 0x22, 0x82, 0x03, 0x0a, 0x0b, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49,
+	0x6e, 0x70, 0x75, 0x74, 0x12, 0x49, 0x0a, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65,
+	0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x2e, 0x54, 0x61,
+	0x62, 0x6c, 0x65, 0x52, 0x6f, 0x77, 0x48, 0x00, 0x52, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x12,
+	0x52, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74, 0x73, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x32, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72,
+	0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x2e, 0x43, 0x6f, 0x6e,
+	0x73, 0x74, 0x61, 0x6e, 0x74, 0x73, 0x48, 0x00, 0x52, 0x09, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61,
+	0x6e, 0x74, 0x73, 0x1a, 0xa2, 0x01, 0x0a, 0x08, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x6f, 0x77,
+	0x12, 0x27, 0x0a, 0x0f, 0x64, 0x61, 0x74, 0x61, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x6e,
+	0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x64, 0x61, 0x74, 0x61, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x4e, 0x0a, 0x05, 0x74, 0x61, 0x62,
+	0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x38, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61,
-	0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49, 0x6e, 0x70,
-	0x75, 0x74, 0x2e, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x6f, 0x77, 0x48, 0x00, 0x52, 0x05, 0x74,
-	0x61, 0x62, 0x6c, 0x65, 0x12, 0x52, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74,
-	0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x32, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64,
-	0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x6e, 0x6c, 0x69, 0x6e, 0x65, 0x49, 0x6e, 0x70, 0x75,
-	0x74, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74, 0x73, 0x48, 0x00, 0x52, 0x09, 0x63,
-	0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74, 0x73, 0x1a, 0xa2, 0x01, 0x0a, 0x08, 0x54, 0x61, 0x62,
-	0x6c, 0x65, 0x52, 0x6f, 0x77, 0x12, 0x27, 0x0a, 0x0f, 0x64, 0x61, 0x74, 0x61, 0x73, 0x6f, 0x75,
-	0x72, 0x63, 0x65, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e,
-	0x64, 0x61, 0x74, 0x61, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x4e,
-	0x0a, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x38, 0x2e,
-	0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e,
-	0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x6c, 0x6f, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x2e, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x1d,
-	0x0a, 0x0a, 0x6b, 0x65, 0x79, 0x5f, 0x63, 0x6f, 0x6c, 0x75, 0x6d, 0x6e, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x09, 0x6b, 0x65, 0x79, 0x43, 0x6f, 0x6c, 0x75, 0x6d, 0x6e, 0x1a, 0x23, 0x0a,
-	0x09, 0x43, 0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65,
-	0x61, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x68, 0x65, 0x61, 0x64,
-	0x65, 0x72, 0x42, 0x0a, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x69,
-	0x0a, 0x1c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72,
-	0x53, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x49,
-	0x0a, 0x09, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
-	0x0b, 0x32, 0x2b, 0x2e, 0x73, 0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
-	0x66, 0x2e, 0x69, 0x6e, 0x66, 0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e,
-	0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x52, 0x09,
-	0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x42, 0x13, 0x5a, 0x11, 0x70, 0x72, 0x69,
-	0x76, 0x6d, 0x65, 0x73, 0x68, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
+	0x44, 0x61, 0x74, 0x61, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x54, 0x61, 0x62,
+	0x6c, 0x65, 0x52, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x6b, 0x65, 0x79,
+	0x5f, 0x63, 0x6f, 0x6c, 0x75, 0x6d, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6b,
+	0x65, 0x79, 0x43, 0x6f, 0x6c, 0x75, 0x6d, 0x6e, 0x1a, 0x23, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x73,
+	0x74, 0x61, 0x6e, 0x74, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x42, 0x0a, 0x0a,
+	0x08, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x69, 0x0a, 0x1c, 0x55, 0x70, 0x64,
+	0x61, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x6f, 0x72, 0x53, 0x63, 0x68, 0x65, 0x6d,
+	0x61, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x49, 0x0a, 0x09, 0x6f, 0x70, 0x65,
+	0x72, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x73,
+	0x75, 0x64, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x69, 0x6e, 0x66,
+	0x72, 0x61, 0x5f, 0x61, 0x64, 0x61, 0x70, 0x74, 0x65, 0x72, 0x2e, 0x4f, 0x70, 0x65, 0x72, 0x61,
+	0x74, 0x6f, 0x72, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x52, 0x09, 0x6f, 0x70, 0x65, 0x72, 0x61,
+	0x74, 0x6f, 0x72, 0x73, 0x42, 0x13, 0x5a, 0x11, 0x70, 0x72, 0x69, 0x76, 0x6d, 0x65, 0x73, 0x68,
+	0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -6109,7 +6235,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDescGZIP() []byte {
 }
 
 var file_sudo_protobuf_infra_adapter_infra_adapter_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
-var file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes = make([]protoimpl.MessageInfo, 89)
+var file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes = make([]protoimpl.MessageInfo, 90)
 var file_sudo_protobuf_infra_adapter_infra_adapter_proto_goTypes = []interface{}{
 	(KillResult_Code)(0),                           // 0: sudo.protobuf.infra_adapter.KillResult.Code
 	(Health_Status)(0),                             // 1: sudo.protobuf.infra_adapter.Health.Status
@@ -6188,69 +6314,71 @@ var file_sudo_protobuf_infra_adapter_infra_adapter_proto_goTypes = []interface{}
 	(*OnlinePirReponse)(nil),                       // 74: sudo.protobuf.infra_adapter.OnlinePirReponse
 	(*OnlineBlockId)(nil),                          // 75: sudo.protobuf.infra_adapter.OnlineBlockId
 	(*OnlineBlock)(nil),                            // 76: sudo.protobuf.infra_adapter.OnlineBlock
-	(*OnlineOperatorConfig)(nil),                   // 77: sudo.protobuf.infra_adapter.OnlineOperatorConfig
-	(*OnlineParticipant)(nil),                      // 78: sudo.protobuf.infra_adapter.OnlineParticipant
-	(*OnlineInput)(nil),                            // 79: sudo.protobuf.infra_adapter.OnlineInput
-	(*UpdateOperatorSchemasRequest)(nil),           // 80: sudo.protobuf.infra_adapter.UpdateOperatorSchemasRequest
-	nil,                                            // 81: sudo.protobuf.infra_adapter.Block.DeprecatedPartyUriMapEntry
-	nil,                                            // 82: sudo.protobuf.infra_adapter.OperatorConfig.InputsEntry
-	nil,                                            // 83: sudo.protobuf.infra_adapter.OperatorConfig.OutputsEntry
-	(*DescTableResponse_TableFieldMetaInfo)(nil),   // 84: sudo.protobuf.infra_adapter.DescTableResponse.TableFieldMetaInfo
-	(*WalkDirResponse_NodeMetaInfo)(nil),           // 85: sudo.protobuf.infra_adapter.WalkDirResponse.NodeMetaInfo
-	(*UpdateDataSourceRequest_DataSource)(nil),     // 86: sudo.protobuf.infra_adapter.UpdateDataSourceRequest.DataSource
-	(*UpdateDataSourceResponse_DatasourceRes)(nil), // 87: sudo.protobuf.infra_adapter.UpdateDataSourceResponse.DatasourceRes
-	(*GetFurnaceConfigResponse_Resource)(nil),      // 88: sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.Resource
-	(*UpdateBlockInfoRequest_OperatorStatus)(nil),  // 89: sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.OperatorStatus
-	nil,                                      // 90: sudo.protobuf.infra_adapter.OnlinePredictResponse.ResultEntry
-	nil,                                      // 91: sudo.protobuf.infra_adapter.OnlinePredictResponseItem.ResultEntry
-	nil,                                      // 92: sudo.protobuf.infra_adapter.OnlineBlock.ResultMemoryKeyEntry
-	(*OnlineParticipant_OnlineLocation)(nil), // 93: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation
-	nil,                                      // 94: sudo.protobuf.infra_adapter.OnlineParticipant.InputsEntry
-	(*OnlineInput_TableRow)(nil),             // 95: sudo.protobuf.infra_adapter.OnlineInput.TableRow
-	(*OnlineInput_Constants)(nil),            // 96: sudo.protobuf.infra_adapter.OnlineInput.Constants
-	(enums.Resource_Type)(0),                 // 97: sudo.protobuf.enums.Resource.Type
-	(*common.ResourceRequirement)(nil),       // 98: common.ResourceRequirement
-	(enums.Stage_Type)(0),                    // 99: sudo.protobuf.enums.Stage.Type
-	(enums.Job_Type)(0),                      // 100: sudo.protobuf.enums.Job.Type
-	(*infra_adapter.DataLocation_DBConnection)(nil), // 101: sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
-	(*infra_adapter.DataLocation_File)(nil),         // 102: sudo.protobuf.infra_adapter.location.DataLocation.File
-	(*infra_adapter.DataLocation)(nil),              // 103: sudo.protobuf.infra_adapter.location.DataLocation
-	(enums.TripletsBitInfo_Type)(0),                 // 104: sudo.protobuf.enums.TripletsBitInfo.Type
-	(enums.Datasource_Type)(0),                      // 105: sudo.protobuf.enums.Datasource.Type
-	(enums.Resource_Mode)(0),                        // 106: sudo.protobuf.enums.Resource.Mode
-	(*emptypb.Empty)(nil),                           // 107: google.protobuf.Empty
-	(*infra_adapter.DataLocation_Table)(nil),        // 108: sudo.protobuf.infra_adapter.location.DataLocation.Table
+	(*TableHashBucketRequest)(nil),                 // 77: sudo.protobuf.infra_adapter.TableHashBucketRequest
+	(*OnlineOperatorConfig)(nil),                   // 78: sudo.protobuf.infra_adapter.OnlineOperatorConfig
+	(*OnlineParticipant)(nil),                      // 79: sudo.protobuf.infra_adapter.OnlineParticipant
+	(*OnlineInput)(nil),                            // 80: sudo.protobuf.infra_adapter.OnlineInput
+	(*UpdateOperatorSchemasRequest)(nil),           // 81: sudo.protobuf.infra_adapter.UpdateOperatorSchemasRequest
+	nil,                                            // 82: sudo.protobuf.infra_adapter.Block.DeprecatedPartyUriMapEntry
+	nil,                                            // 83: sudo.protobuf.infra_adapter.OperatorConfig.InputsEntry
+	nil,                                            // 84: sudo.protobuf.infra_adapter.OperatorConfig.OutputsEntry
+	(*DescTableResponse_TableFieldMetaInfo)(nil),   // 85: sudo.protobuf.infra_adapter.DescTableResponse.TableFieldMetaInfo
+	(*WalkDirResponse_NodeMetaInfo)(nil),           // 86: sudo.protobuf.infra_adapter.WalkDirResponse.NodeMetaInfo
+	(*UpdateDataSourceRequest_DataSource)(nil),     // 87: sudo.protobuf.infra_adapter.UpdateDataSourceRequest.DataSource
+	(*UpdateDataSourceResponse_DatasourceRes)(nil), // 88: sudo.protobuf.infra_adapter.UpdateDataSourceResponse.DatasourceRes
+	(*GetFurnaceConfigResponse_Resource)(nil),      // 89: sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.Resource
+	(*UpdateBlockInfoRequest_OperatorStatus)(nil),  // 90: sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.OperatorStatus
+	nil,                                      // 91: sudo.protobuf.infra_adapter.OnlinePredictResponse.ResultEntry
+	nil,                                      // 92: sudo.protobuf.infra_adapter.OnlinePredictResponseItem.ResultEntry
+	nil,                                      // 93: sudo.protobuf.infra_adapter.OnlineBlock.ResultMemoryKeyEntry
+	(*OnlineParticipant_OnlineLocation)(nil), // 94: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation
+	nil,                                      // 95: sudo.protobuf.infra_adapter.OnlineParticipant.InputsEntry
+	(*OnlineInput_TableRow)(nil),             // 96: sudo.protobuf.infra_adapter.OnlineInput.TableRow
+	(*OnlineInput_Constants)(nil),            // 97: sudo.protobuf.infra_adapter.OnlineInput.Constants
+	(enums.Resource_Type)(0),                 // 98: sudo.protobuf.enums.Resource.Type
+	(*common.ResourceRequirement)(nil),       // 99: common.ResourceRequirement
+	(enums.Stage_Type)(0),                    // 100: sudo.protobuf.enums.Stage.Type
+	(enums.Job_Type)(0),                      // 101: sudo.protobuf.enums.Job.Type
+	(*infra_adapter.DataLocation_DBConnection)(nil), // 102: sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
+	(*infra_adapter.DataLocation_File)(nil),         // 103: sudo.protobuf.infra_adapter.location.DataLocation.File
+	(*infra_adapter.DataLocation)(nil),              // 104: sudo.protobuf.infra_adapter.location.DataLocation
+	(enums.TripletsBitInfo_Type)(0),                 // 105: sudo.protobuf.enums.TripletsBitInfo.Type
+	(*infra_adapter.DataLocation_DB)(nil),           // 106: sudo.protobuf.infra_adapter.location.DataLocation.DB
+	(enums.Datasource_Type)(0),                      // 107: sudo.protobuf.enums.Datasource.Type
+	(enums.Resource_Mode)(0),                        // 108: sudo.protobuf.enums.Resource.Mode
+	(*emptypb.Empty)(nil),                           // 109: google.protobuf.Empty
+	(*infra_adapter.DataLocation_Table)(nil),        // 110: sudo.protobuf.infra_adapter.location.DataLocation.Table
 }
 var file_sudo_protobuf_infra_adapter_infra_adapter_proto_depIdxs = []int32{
-	97,  // 0: sudo.protobuf.infra_adapter.PartyInfo.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
-	98,  // 1: sudo.protobuf.infra_adapter.PartyInfo.resource_requirement:type_name -> common.ResourceRequirement
+	98,  // 0: sudo.protobuf.infra_adapter.PartyInfo.resource_type:type_name -> sudo.protobuf.enums.Resource.Type
+	99,  // 1: sudo.protobuf.infra_adapter.PartyInfo.resource_requirement:type_name -> common.ResourceRequirement
 	12,  // 2: sudo.protobuf.infra_adapter.Block.id:type_name -> sudo.protobuf.infra_adapter.BlockID
 	11,  // 3: sudo.protobuf.infra_adapter.Block.operators:type_name -> sudo.protobuf.infra_adapter.OperatorConfig
-	81,  // 4: sudo.protobuf.infra_adapter.Block._deprecated_party_uri_map:type_name -> sudo.protobuf.infra_adapter.Block.DeprecatedPartyUriMapEntry
+	82,  // 4: sudo.protobuf.infra_adapter.Block._deprecated_party_uri_map:type_name -> sudo.protobuf.infra_adapter.Block.DeprecatedPartyUriMapEntry
 	8,   // 5: sudo.protobuf.infra_adapter.Block.party_infos:type_name -> sudo.protobuf.infra_adapter.PartyInfo
 	9,   // 6: sudo.protobuf.infra_adapter.CreateBlockRequest.block:type_name -> sudo.protobuf.infra_adapter.Block
-	99,  // 7: sudo.protobuf.infra_adapter.CreateBlockRequest.origin_stage_type:type_name -> sudo.protobuf.enums.Stage.Type
-	100, // 8: sudo.protobuf.infra_adapter.CreateBlockRequest.job_type:type_name -> sudo.protobuf.enums.Job.Type
-	82,  // 9: sudo.protobuf.infra_adapter.OperatorConfig.inputs:type_name -> sudo.protobuf.infra_adapter.OperatorConfig.InputsEntry
-	83,  // 10: sudo.protobuf.infra_adapter.OperatorConfig.outputs:type_name -> sudo.protobuf.infra_adapter.OperatorConfig.OutputsEntry
-	99,  // 11: sudo.protobuf.infra_adapter.OperatorConfig.op_type_enum:type_name -> sudo.protobuf.enums.Stage.Type
+	100, // 7: sudo.protobuf.infra_adapter.CreateBlockRequest.origin_stage_type:type_name -> sudo.protobuf.enums.Stage.Type
+	101, // 8: sudo.protobuf.infra_adapter.CreateBlockRequest.job_type:type_name -> sudo.protobuf.enums.Job.Type
+	83,  // 9: sudo.protobuf.infra_adapter.OperatorConfig.inputs:type_name -> sudo.protobuf.infra_adapter.OperatorConfig.InputsEntry
+	84,  // 10: sudo.protobuf.infra_adapter.OperatorConfig.outputs:type_name -> sudo.protobuf.infra_adapter.OperatorConfig.OutputsEntry
+	100, // 11: sudo.protobuf.infra_adapter.OperatorConfig.op_type_enum:type_name -> sudo.protobuf.enums.Stage.Type
 	45,  // 12: sudo.protobuf.infra_adapter.OperatorConfig.version:type_name -> sudo.protobuf.infra_adapter.Version
 	0,   // 13: sudo.protobuf.infra_adapter.KillResult.code:type_name -> sudo.protobuf.infra_adapter.KillResult.Code
 	1,   // 14: sudo.protobuf.infra_adapter.Health.status:type_name -> sudo.protobuf.infra_adapter.Health.Status
 	12,  // 15: sudo.protobuf.infra_adapter.StageList.ids:type_name -> sudo.protobuf.infra_adapter.BlockID
-	101, // 16: sudo.protobuf.infra_adapter.ShowDatabasesRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
-	101, // 17: sudo.protobuf.infra_adapter.ShowTablesRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
-	101, // 18: sudo.protobuf.infra_adapter.DescTableRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
-	102, // 19: sudo.protobuf.infra_adapter.DescFileNodeRequest.file:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.File
-	84,  // 20: sudo.protobuf.infra_adapter.DescTableResponse.fields:type_name -> sudo.protobuf.infra_adapter.DescTableResponse.TableFieldMetaInfo
-	85,  // 21: sudo.protobuf.infra_adapter.WalkDirResponse.nodes:type_name -> sudo.protobuf.infra_adapter.WalkDirResponse.NodeMetaInfo
+	102, // 16: sudo.protobuf.infra_adapter.ShowDatabasesRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
+	102, // 17: sudo.protobuf.infra_adapter.ShowTablesRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
+	102, // 18: sudo.protobuf.infra_adapter.DescTableRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
+	103, // 19: sudo.protobuf.infra_adapter.DescFileNodeRequest.file:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.File
+	85,  // 20: sudo.protobuf.infra_adapter.DescTableResponse.fields:type_name -> sudo.protobuf.infra_adapter.DescTableResponse.TableFieldMetaInfo
+	86,  // 21: sudo.protobuf.infra_adapter.WalkDirResponse.nodes:type_name -> sudo.protobuf.infra_adapter.WalkDirResponse.NodeMetaInfo
 	12,  // 22: sudo.protobuf.infra_adapter.GetRunningsResponse.ids:type_name -> sudo.protobuf.infra_adapter.BlockID
 	9,   // 23: sudo.protobuf.infra_adapter.LaunchBlockRequest.block:type_name -> sudo.protobuf.infra_adapter.Block
 	12,  // 24: sudo.protobuf.infra_adapter.RevokeBlockRequest.block_id:type_name -> sudo.protobuf.infra_adapter.BlockID
 	3,   // 25: sudo.protobuf.infra_adapter.RevokeBlockResponse.code:type_name -> sudo.protobuf.infra_adapter.RevokeBlockResponse.Code
-	102, // 26: sudo.protobuf.infra_adapter.ReadFileRequest.file:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.File
+	103, // 26: sudo.protobuf.infra_adapter.ReadFileRequest.file:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.File
 	50,  // 27: sudo.protobuf.infra_adapter.ReadFileResponse.columns:type_name -> sudo.protobuf.infra_adapter.SqlColumn
-	103, // 28: sudo.protobuf.infra_adapter.RemoveResourcesRequest.locations:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
+	104, // 28: sudo.protobuf.infra_adapter.RemoveResourcesRequest.locations:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
 	38,  // 29: sudo.protobuf.infra_adapter.RemoveResourcesResponse.response:type_name -> sudo.protobuf.infra_adapter.SingleRemoveResourceResponse
 	12,  // 30: sudo.protobuf.infra_adapter.GetStageConfigRequest.id:type_name -> sudo.protobuf.infra_adapter.BlockID
 	9,   // 31: sudo.protobuf.infra_adapter.GetStageConfigResponse.config:type_name -> sudo.protobuf.infra_adapter.Block
@@ -6261,52 +6389,55 @@ var file_sudo_protobuf_infra_adapter_infra_adapter_proto_depIdxs = []int32{
 	2,   // 36: sudo.protobuf.infra_adapter.UpdateMachineStatusRequest.status:type_name -> sudo.protobuf.infra_adapter.OperatorMachine.Status
 	45,  // 37: sudo.protobuf.infra_adapter.OperatorSchema.version:type_name -> sudo.protobuf.infra_adapter.Version
 	46,  // 38: sudo.protobuf.infra_adapter.RegisterMachineRequest.operators:type_name -> sudo.protobuf.infra_adapter.OperatorSchema
-	101, // 39: sudo.protobuf.infra_adapter.RunSqlRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
+	102, // 39: sudo.protobuf.infra_adapter.RunSqlRequest.connection:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DBConnection
 	50,  // 40: sudo.protobuf.infra_adapter.RunSqlResponse.columns:type_name -> sudo.protobuf.infra_adapter.SqlColumn
-	86,  // 41: sudo.protobuf.infra_adapter.UpdateDataSourceRequest.data_sources:type_name -> sudo.protobuf.infra_adapter.UpdateDataSourceRequest.DataSource
-	87,  // 42: sudo.protobuf.infra_adapter.UpdateDataSourceResponse.response:type_name -> sudo.protobuf.infra_adapter.UpdateDataSourceResponse.DatasourceRes
+	87,  // 41: sudo.protobuf.infra_adapter.UpdateDataSourceRequest.data_sources:type_name -> sudo.protobuf.infra_adapter.UpdateDataSourceRequest.DataSource
+	88,  // 42: sudo.protobuf.infra_adapter.UpdateDataSourceResponse.response:type_name -> sudo.protobuf.infra_adapter.UpdateDataSourceResponse.DatasourceRes
 	12,  // 43: sudo.protobuf.infra_adapter.ReportStageUsageRequest.id:type_name -> sudo.protobuf.infra_adapter.BlockID
 	6,   // 44: sudo.protobuf.infra_adapter.BlockStatus.state:type_name -> sudo.protobuf.infra_adapter.BlockStatus.State
 	12,  // 45: sudo.protobuf.infra_adapter.GetBlockStatusRequest.id:type_name -> sudo.protobuf.infra_adapter.BlockID
 	57,  // 46: sudo.protobuf.infra_adapter.GetBlockStatusResponse.status:type_name -> sudo.protobuf.infra_adapter.BlockStatus
-	88,  // 47: sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.resource:type_name -> sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.Resource
+	89,  // 47: sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.resource:type_name -> sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.Resource
 	12,  // 48: sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.id:type_name -> sudo.protobuf.infra_adapter.BlockID
-	89,  // 49: sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.operator_status:type_name -> sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.OperatorStatus
+	90,  // 49: sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.operator_status:type_name -> sudo.protobuf.infra_adapter.UpdateBlockInfoRequest.OperatorStatus
 	65,  // 50: sudo.protobuf.infra_adapter.RowKeys.key:type_name -> sudo.protobuf.infra_adapter.OnlineParamKey
 	67,  // 51: sudo.protobuf.infra_adapter.PredictInput.row_values:type_name -> sudo.protobuf.infra_adapter.RowValue
 	65,  // 52: sudo.protobuf.infra_adapter.PredictParam.online_param_keys:type_name -> sudo.protobuf.infra_adapter.OnlineParamKey
 	68,  // 53: sudo.protobuf.infra_adapter.PredictParam.predict_inputs:type_name -> sudo.protobuf.infra_adapter.PredictInput
 	66,  // 54: sudo.protobuf.infra_adapter.OnlinePredictRequest.inputs:type_name -> sudo.protobuf.infra_adapter.RowKeys
 	69,  // 55: sudo.protobuf.infra_adapter.OnlinePredictRequest.params:type_name -> sudo.protobuf.infra_adapter.PredictParam
-	90,  // 56: sudo.protobuf.infra_adapter.OnlinePredictResponse.result:type_name -> sudo.protobuf.infra_adapter.OnlinePredictResponse.ResultEntry
+	91,  // 56: sudo.protobuf.infra_adapter.OnlinePredictResponse.result:type_name -> sudo.protobuf.infra_adapter.OnlinePredictResponse.ResultEntry
 	72,  // 57: sudo.protobuf.infra_adapter.OnlinePredictResponse.items:type_name -> sudo.protobuf.infra_adapter.OnlinePredictResponseItem
 	7,   // 58: sudo.protobuf.infra_adapter.OnlinePredictResponseItem.status:type_name -> sudo.protobuf.infra_adapter.OnlinePredictResponseItem.Status
-	91,  // 59: sudo.protobuf.infra_adapter.OnlinePredictResponseItem.result:type_name -> sudo.protobuf.infra_adapter.OnlinePredictResponseItem.ResultEntry
-	77,  // 60: sudo.protobuf.infra_adapter.OnlineBlock.operators:type_name -> sudo.protobuf.infra_adapter.OnlineOperatorConfig
+	92,  // 59: sudo.protobuf.infra_adapter.OnlinePredictResponseItem.result:type_name -> sudo.protobuf.infra_adapter.OnlinePredictResponseItem.ResultEntry
+	78,  // 60: sudo.protobuf.infra_adapter.OnlineBlock.operators:type_name -> sudo.protobuf.infra_adapter.OnlineOperatorConfig
 	8,   // 61: sudo.protobuf.infra_adapter.OnlineBlock.party_infos:type_name -> sudo.protobuf.infra_adapter.PartyInfo
-	92,  // 62: sudo.protobuf.infra_adapter.OnlineBlock.result_memory_key:type_name -> sudo.protobuf.infra_adapter.OnlineBlock.ResultMemoryKeyEntry
-	104, // 63: sudo.protobuf.infra_adapter.OnlineBlock.triplets_bit_info:type_name -> sudo.protobuf.enums.TripletsBitInfo.Type
-	78,  // 64: sudo.protobuf.infra_adapter.OnlineOperatorConfig.parties:type_name -> sudo.protobuf.infra_adapter.OnlineParticipant
-	94,  // 65: sudo.protobuf.infra_adapter.OnlineParticipant.inputs:type_name -> sudo.protobuf.infra_adapter.OnlineParticipant.InputsEntry
-	95,  // 66: sudo.protobuf.infra_adapter.OnlineInput.table:type_name -> sudo.protobuf.infra_adapter.OnlineInput.TableRow
-	96,  // 67: sudo.protobuf.infra_adapter.OnlineInput.constants:type_name -> sudo.protobuf.infra_adapter.OnlineInput.Constants
-	46,  // 68: sudo.protobuf.infra_adapter.UpdateOperatorSchemasRequest.operators:type_name -> sudo.protobuf.infra_adapter.OperatorSchema
-	103, // 69: sudo.protobuf.infra_adapter.OperatorConfig.InputsEntry.value:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
-	103, // 70: sudo.protobuf.infra_adapter.OperatorConfig.OutputsEntry.value:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
-	105, // 71: sudo.protobuf.infra_adapter.UpdateDataSourceRequest.DataSource.type:type_name -> sudo.protobuf.enums.Datasource.Type
-	106, // 72: sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.Resource.mode:type_name -> sudo.protobuf.enums.Resource.Mode
-	65,  // 73: sudo.protobuf.infra_adapter.OnlineBlock.ResultMemoryKeyEntry.value:type_name -> sudo.protobuf.infra_adapter.OnlineParamKey
-	103, // 74: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.preload:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
-	65,  // 75: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.upstream:type_name -> sudo.protobuf.infra_adapter.OnlineParamKey
-	79,  // 76: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.online:type_name -> sudo.protobuf.infra_adapter.OnlineInput
-	107, // 77: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.from_api:type_name -> google.protobuf.Empty
-	93,  // 78: sudo.protobuf.infra_adapter.OnlineParticipant.InputsEntry.value:type_name -> sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation
-	108, // 79: sudo.protobuf.infra_adapter.OnlineInput.TableRow.table:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.Table
-	80,  // [80:80] is the sub-list for method output_type
-	80,  // [80:80] is the sub-list for method input_type
-	80,  // [80:80] is the sub-list for extension type_name
-	80,  // [80:80] is the sub-list for extension extendee
-	0,   // [0:80] is the sub-list for field type_name
+	93,  // 62: sudo.protobuf.infra_adapter.OnlineBlock.result_memory_key:type_name -> sudo.protobuf.infra_adapter.OnlineBlock.ResultMemoryKeyEntry
+	105, // 63: sudo.protobuf.infra_adapter.OnlineBlock.triplets_bit_info:type_name -> sudo.protobuf.enums.TripletsBitInfo.Type
+	77,  // 64: sudo.protobuf.infra_adapter.OnlineBlock.table_hash_bucket_req:type_name -> sudo.protobuf.infra_adapter.TableHashBucketRequest
+	106, // 65: sudo.protobuf.infra_adapter.TableHashBucketRequest.db_table:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DB
+	106, // 66: sudo.protobuf.infra_adapter.TableHashBucketRequest.storage_table:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.DB
+	79,  // 67: sudo.protobuf.infra_adapter.OnlineOperatorConfig.parties:type_name -> sudo.protobuf.infra_adapter.OnlineParticipant
+	95,  // 68: sudo.protobuf.infra_adapter.OnlineParticipant.inputs:type_name -> sudo.protobuf.infra_adapter.OnlineParticipant.InputsEntry
+	96,  // 69: sudo.protobuf.infra_adapter.OnlineInput.table:type_name -> sudo.protobuf.infra_adapter.OnlineInput.TableRow
+	97,  // 70: sudo.protobuf.infra_adapter.OnlineInput.constants:type_name -> sudo.protobuf.infra_adapter.OnlineInput.Constants
+	46,  // 71: sudo.protobuf.infra_adapter.UpdateOperatorSchemasRequest.operators:type_name -> sudo.protobuf.infra_adapter.OperatorSchema
+	104, // 72: sudo.protobuf.infra_adapter.OperatorConfig.InputsEntry.value:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
+	104, // 73: sudo.protobuf.infra_adapter.OperatorConfig.OutputsEntry.value:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
+	107, // 74: sudo.protobuf.infra_adapter.UpdateDataSourceRequest.DataSource.type:type_name -> sudo.protobuf.enums.Datasource.Type
+	108, // 75: sudo.protobuf.infra_adapter.GetFurnaceConfigResponse.Resource.mode:type_name -> sudo.protobuf.enums.Resource.Mode
+	65,  // 76: sudo.protobuf.infra_adapter.OnlineBlock.ResultMemoryKeyEntry.value:type_name -> sudo.protobuf.infra_adapter.OnlineParamKey
+	104, // 77: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.preload:type_name -> sudo.protobuf.infra_adapter.location.DataLocation
+	65,  // 78: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.upstream:type_name -> sudo.protobuf.infra_adapter.OnlineParamKey
+	80,  // 79: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.online:type_name -> sudo.protobuf.infra_adapter.OnlineInput
+	109, // 80: sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation.from_api:type_name -> google.protobuf.Empty
+	94,  // 81: sudo.protobuf.infra_adapter.OnlineParticipant.InputsEntry.value:type_name -> sudo.protobuf.infra_adapter.OnlineParticipant.OnlineLocation
+	110, // 82: sudo.protobuf.infra_adapter.OnlineInput.TableRow.table:type_name -> sudo.protobuf.infra_adapter.location.DataLocation.Table
+	83,  // [83:83] is the sub-list for method output_type
+	83,  // [83:83] is the sub-list for method input_type
+	83,  // [83:83] is the sub-list for extension type_name
+	83,  // [83:83] is the sub-list for extension extendee
+	0,   // [0:83] is the sub-list for field type_name
 }
 
 func init() { file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() }
@@ -7144,7 +7275,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 			}
 		}
 		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OnlineOperatorConfig); i {
+			switch v := v.(*TableHashBucketRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7156,7 +7287,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 			}
 		}
 		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OnlineParticipant); i {
+			switch v := v.(*OnlineOperatorConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7168,7 +7299,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 			}
 		}
 		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OnlineInput); i {
+			switch v := v.(*OnlineParticipant); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7180,6 +7311,18 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 			}
 		}
 		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[72].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OnlineInput); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[73].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateOperatorSchemasRequest); i {
 			case 0:
 				return &v.state
@@ -7191,7 +7334,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[76].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[77].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DescTableResponse_TableFieldMetaInfo); i {
 			case 0:
 				return &v.state
@@ -7203,7 +7346,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[77].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[78].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WalkDirResponse_NodeMetaInfo); i {
 			case 0:
 				return &v.state
@@ -7215,7 +7358,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[78].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[79].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateDataSourceRequest_DataSource); i {
 			case 0:
 				return &v.state
@@ -7227,7 +7370,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[79].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[80].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateDataSourceResponse_DatasourceRes); i {
 			case 0:
 				return &v.state
@@ -7239,7 +7382,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[80].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[81].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetFurnaceConfigResponse_Resource); i {
 			case 0:
 				return &v.state
@@ -7251,7 +7394,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[81].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[82].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateBlockInfoRequest_OperatorStatus); i {
 			case 0:
 				return &v.state
@@ -7263,7 +7406,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[85].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[86].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*OnlineParticipant_OnlineLocation); i {
 			case 0:
 				return &v.state
@@ -7275,7 +7418,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[87].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[88].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*OnlineInput_TableRow); i {
 			case 0:
 				return &v.state
@@ -7287,7 +7430,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 				return nil
 			}
 		}
-		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[88].Exporter = func(v interface{}, i int) interface{} {
+		file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[89].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*OnlineInput_Constants); i {
 			case 0:
 				return &v.state
@@ -7300,11 +7443,11 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 			}
 		}
 	}
-	file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[71].OneofWrappers = []interface{}{
+	file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[72].OneofWrappers = []interface{}{
 		(*OnlineInput_Table)(nil),
 		(*OnlineInput_Constants_)(nil),
 	}
-	file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[85].OneofWrappers = []interface{}{
+	file_sudo_protobuf_infra_adapter_infra_adapter_proto_msgTypes[86].OneofWrappers = []interface{}{
 		(*OnlineParticipant_OnlineLocation_Preload)(nil),
 		(*OnlineParticipant_OnlineLocation_Upstream)(nil),
 		(*OnlineParticipant_OnlineLocation_Online)(nil),
@@ -7316,7 +7459,7 @@ func file_sudo_protobuf_infra_adapter_infra_adapter_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_sudo_protobuf_infra_adapter_infra_adapter_proto_rawDesc,
 			NumEnums:      8,
-			NumMessages:   89,
+			NumMessages:   90,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

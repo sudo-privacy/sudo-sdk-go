@@ -1,4 +1,4 @@
-package pir
+package sudoclient
 
 import (
 	"math/rand"
@@ -7,7 +7,7 @@ import (
 
 var letters = []rune("0123456789abcdefghijklmnopqrstuvwxyz")
 
-func randPath(n int) string {
+func RandPath(n int) string {
 	b := make([]rune, n)
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := range b {

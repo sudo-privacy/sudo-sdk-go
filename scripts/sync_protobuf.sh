@@ -57,6 +57,9 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/party.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/party \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/pir.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir \
     --go_opt=Msudo/protobuf/mpc_virtual_service/platform/token.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/token \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/apl.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/apl \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/online_service \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/task.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/task \
     --go_opt=Msudo/protobuf/infra_adapter/infra_adapter.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common \
@@ -91,6 +94,9 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common \
     --go_opt=Msudo/protobuf/infra_adapter/location/location.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/infra_adapter \
     --go_opt=Msudo/protobuf/api_usage/api_usage.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/api_usage \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/apl.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/apl \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/online_service \
+    --go_opt=Msudo/protobuf/mpc_virtual_service/platform/task.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/task \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/user.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/user \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/furnacestatus.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/furnacestatus \
     --go_opt=Mprotobuf/mpc_virtual_service/platform/cron.proto=github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/cron \

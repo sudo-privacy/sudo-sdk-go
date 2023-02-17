@@ -132,7 +132,7 @@ func (f *Factory) CreatePirServer(
 			KeyColumns:             keyColumns,
 			LabelColumns:           labelColumns,
 			Name:                   identityName,
-			Path:                   randPath(5),
+			Path:                   sudoclient.RandPath(5),
 		},
 	})
 	if err != nil {
@@ -196,7 +196,7 @@ func (f *Factory) CreatePirClient(
 
 		return f.protoPirClientToClient(data), nil
 	}
-	path := randPath(5)
+	path := sudoclient.RandPath(5)
 	createPirClientServiceResp, err := f.CreatePirClientService(ctx, &pir.CreatePirClientServiceRequest{
 		PirClient: &pir.PirClient{
 			Name:          "pir_client_" + path,

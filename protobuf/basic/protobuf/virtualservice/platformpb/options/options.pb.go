@@ -230,6 +230,14 @@ var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_extTypes = []p
 		Tag:           "varint,1002,opt,name=keep_empty",
 		Filename:      "sudo/protobuf/mpc_virtual_service/platform/options.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
+		ExtensionType: (*bool)(nil),
+		Field:         1000,
+		Name:          "sudo.protobuf.platform.options.as_value",
+		Tag:           "varint,1000,opt,name=as_value",
+		Filename:      "sudo/protobuf/mpc_virtual_service/platform/options.proto",
+	},
 }
 
 // Extension fields to descriptorpb.MethodOptions.
@@ -246,6 +254,12 @@ var (
 	E_JsonSquash = &file_sudo_protobuf_mpc_virtual_service_platform_options_proto_extTypes[2]
 	// optional bool keep_empty = 1002;
 	E_KeepEmpty = &file_sudo_protobuf_mpc_virtual_service_platform_options_proto_extTypes[3]
+)
+
+// Extension fields to descriptorpb.MessageOptions.
+var (
+	// optional bool as_value = 1000;
+	E_AsValue = &file_sudo_protobuf_mpc_virtual_service_platform_options_proto_extTypes[4]
 )
 
 var File_sudo_protobuf_mpc_virtual_service_platform_options_proto protoreflect.FileDescriptor
@@ -333,8 +347,11 @@ var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_rawDesc = []by
 	0x65, 0x70, 0x5f, 0x65, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x1d, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
 	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64,
 	0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0xea, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09,
-	0x6b, 0x65, 0x65, 0x70, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x6b, 0x65, 0x65, 0x70, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x3a, 0x3b, 0x0a, 0x08, 0x61, 0x73, 0x5f,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x1f, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x4f,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0xe8, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x61,
+	0x73, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -352,10 +369,11 @@ func file_sudo_protobuf_mpc_virtual_service_platform_options_proto_rawDescGZIP()
 var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_goTypes = []interface{}{
-	(PermTag)(0),                       // 0: sudo.protobuf.platform.options.PermTag
-	(*PermOption)(nil),                 // 1: sudo.protobuf.platform.options.PermOption
-	(*descriptorpb.MethodOptions)(nil), // 2: google.protobuf.MethodOptions
-	(*descriptorpb.FieldOptions)(nil),  // 3: google.protobuf.FieldOptions
+	(PermTag)(0),                        // 0: sudo.protobuf.platform.options.PermTag
+	(*PermOption)(nil),                  // 1: sudo.protobuf.platform.options.PermOption
+	(*descriptorpb.MethodOptions)(nil),  // 2: google.protobuf.MethodOptions
+	(*descriptorpb.FieldOptions)(nil),   // 3: google.protobuf.FieldOptions
+	(*descriptorpb.MessageOptions)(nil), // 4: google.protobuf.MessageOptions
 }
 var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_depIdxs = []int32{
 	0, // 0: sudo.protobuf.platform.options.PermOption.perm_tags:type_name -> sudo.protobuf.platform.options.PermTag
@@ -363,11 +381,12 @@ var file_sudo_protobuf_mpc_virtual_service_platform_options_proto_depIdxs = []in
 	3, // 2: sudo.protobuf.platform.options.flatten_query_param:extendee -> google.protobuf.FieldOptions
 	3, // 3: sudo.protobuf.platform.options.json_squash:extendee -> google.protobuf.FieldOptions
 	3, // 4: sudo.protobuf.platform.options.keep_empty:extendee -> google.protobuf.FieldOptions
-	1, // 5: sudo.protobuf.platform.options.perm_option:type_name -> sudo.protobuf.platform.options.PermOption
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	5, // [5:6] is the sub-list for extension type_name
-	1, // [1:5] is the sub-list for extension extendee
+	4, // 5: sudo.protobuf.platform.options.as_value:extendee -> google.protobuf.MessageOptions
+	1, // 6: sudo.protobuf.platform.options.perm_option:type_name -> sudo.protobuf.platform.options.PermOption
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	6, // [6:7] is the sub-list for extension type_name
+	1, // [1:6] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
 }
 
@@ -397,7 +416,7 @@ func file_sudo_protobuf_mpc_virtual_service_platform_options_proto_init() {
 			RawDescriptor: file_sudo_protobuf_mpc_virtual_service_platform_options_proto_rawDesc,
 			NumEnums:      1,
 			NumMessages:   1,
-			NumExtensions: 4,
+			NumExtensions: 5,
 			NumServices:   0,
 		},
 		GoTypes:           file_sudo_protobuf_mpc_virtual_service_platform_options_proto_goTypes,
