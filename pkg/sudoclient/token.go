@@ -130,7 +130,7 @@ func (source *userAccountToken) GetRequestMetadata(ctx context.Context, uri ...s
 		return nil, err
 	}
 	return map[string]string{
-		"Authorization": token.Type() + " " + token.AccessToken,
+		"Authorization": token.Type() + " " + token.RefreshToken,
 	}, nil
 }
 
