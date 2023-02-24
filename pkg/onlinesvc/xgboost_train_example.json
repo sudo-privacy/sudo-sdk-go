@@ -1,0 +1,385 @@
+{
+    "name": "训练",
+    "description": " ",
+    "priority": 2,
+    "stages": [
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "set.table": {
+                            "id": 0,
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "vtable"
+                        }
+                    },
+                    "outputs": {
+                        "intersection.table": {}
+                    },
+                    "params": {
+                        "index_columns": [
+                            "ID"
+                        ]
+                    },
+                    "party_id": "party-fa",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    }
+                },
+                "server_configs": [
+                    {
+                        "inputs": {
+                            "set.table": {
+                                "id": 0,
+                                "selected_vtable_cols": [
+                                    "*"
+                                ],
+                                "type": "vtable"
+                            }
+                        },
+                        "outputs": {
+                            "intersection.table": {
+                                "id": 0,
+                                "selected_vtable_cols": [
+                                    "*"
+                                ],
+                                "type": "datasrc"
+                            }
+                        },
+                        "params": {
+                            "index_columns": [
+                                "ID"
+                            ]
+                        },
+                        "party_id": "party-fb",
+                        "resource_request": {
+                            "resource": {
+                                "cpu": {},
+                                "memory": {}
+                            }
+                        }
+                    }
+                ],
+                "shared_params": {
+                    "share_result": true
+                }
+            },
+            "stage_type": 3,
+            "stage_type_str": "psi",
+            "stage_name": "隐私求交-1",
+            "id": "1",
+            "left": 119,
+            "top": 5,
+            "index": 1,
+            "dependencies": []
+        },
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "all_data.table": {
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "upstream",
+                            "upstream_info": "数据预处理（训练）-1:0:data.table",
+                            "upstream_v2": {
+                                "index": 17,
+                                "key": "data.table"
+                            },
+                            "upstream_node_id": "17"
+                        }
+                    },
+                    "outputs": {
+                        "binner.binning.model": {},
+                        "filter_out_cols.filter": {},
+                        "woe_info.woe": {},
+                        "woe_iv.charts": {}
+                    },
+                    "params": {
+                        "additional_categorical_columns": [],
+                        "correlation_size": 10,
+                        "exclude_columns": [],
+                        "label": "income_bracket"
+                    },
+                    "party_id": "party-fa",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    }
+                },
+                "server_configs": [
+                    {
+                        "inputs": {
+                            "all_data.table": {
+                                "selected_vtable_cols": [
+                                    "*"
+                                ],
+                                "type": "upstream",
+                                "upstream_info": "数据预处理（训练）-2:0:data.table",
+                                "upstream_v2": {
+                                    "index": 18,
+                                    "key": "data.table"
+                                },
+                                "upstream_node_id": "18"
+                            }
+                        },
+                        "outputs": {
+                            "binner.binning.model": {},
+                            "filter_out_cols.filter": {}
+                        },
+                        "params": {
+                            "additional_categorical_columns": [],
+                            "exclude_columns": [],
+                            "hide_bin_info": true
+                        },
+                        "party_id": "party-fb",
+                        "resource_request": {
+                            "resource": {
+                                "cpu": {},
+                                "memory": {}
+                            }
+                        }
+                    }
+                ],
+                "shared_params": {
+                    "categorical_threshold": {
+                        "top_n": 9
+                    },
+                    "filter_param": {
+                        "strategy": {
+                            "none": {}
+                        }
+                    },
+                    "numeric_type": {
+                        "equal_frequency": {}
+                    },
+                    "numerical_bins": 10,
+                    "security_level": "normal"
+                }
+            },
+            "stage_type": 8,
+            "stage_type_str": "dataanalysis",
+            "stage_name": "数据分析-1",
+            "id": "5",
+            "left": 119,
+            "top": 192,
+            "index": 5,
+            "dependencies": [
+                18,
+                17
+            ]
+        },
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "all_data.table": {
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "upstream",
+                            "upstream_info": "数据预处理（训练）-1:0:data.table",
+                            "upstream_v2": {
+                                "index": 17,
+                                "key": "data.table"
+                            },
+                            "upstream_node_id": "17"
+                        }
+                    },
+                    "outputs": {
+                        "feature_importance.charts": {},
+                        "importance_ranking.filter": {},
+                        "model.vxgb.client.model": {},
+                        "prediction.table": {}
+                    },
+                    "params": {
+                        "label": "income_bracket"
+                    },
+                    "party_id": "party-fa",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    }
+                },
+                "server_configs": [
+                    {
+                        "inputs": {
+                            "all_data.table": {
+                                "selected_vtable_cols": [
+                                    "*"
+                                ],
+                                "type": "upstream",
+                                "upstream_info": "数据预处理（训练）-2:0:data.table",
+                                "upstream_v2": {
+                                    "index": 18,
+                                    "key": "data.table"
+                                },
+                                "upstream_node_id": "18"
+                            }
+                        },
+                        "outputs": {
+                            "importance_ranking.filter": {},
+                            "model.vxgb.server.model": {}
+                        },
+                        "party_id": "party-fb",
+                        "resource_request": {
+                            "resource": {
+                                "cpu": {},
+                                "memory": {}
+                            }
+                        }
+                    }
+                ],
+                "shared_params": {
+                    "boosting_type": {
+                        "gbdt": {}
+                    },
+                    "feature_sample_rate": 0.8,
+                    "learning_rate": 0.3,
+                    "mode": "binary",
+                    "scheme": {
+                        "ou": {
+                            "security_level": "normal"
+                        }
+                    },
+                    "tree_count": 5,
+                    "tree_param": {
+                        "enable_bundle": false,
+                        "enable_cat_split": false,
+                        "feature_parallel": 2,
+                        "grow_strategy": {
+                            "level_wise": {}
+                        },
+                        "max_depth": 6,
+                        "min_leaf_node": 2,
+                        "min_sample_split": 4,
+                        "split_buckets": 12
+                    }
+                }
+            },
+            "stage_type": 5,
+            "stage_type_str": "xgboost_train",
+            "stage_name": "XGB-训练",
+            "id": "6",
+            "left": 119,
+            "top": 285,
+            "index": 6,
+            "dependencies": [
+                5
+            ]
+        },
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "data.table": {
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "upstream",
+                            "upstream_info": "隐私求交-1:0:intersection.table",
+                            "upstream_v2": {
+                                "index": 1,
+                                "key": "intersection.table"
+                            },
+                            "upstream_node_id": "1"
+                        }
+                    },
+                    "outputs": {
+                        "data.table": {},
+                        "model.prep_v2.model": {}
+                    },
+                    "params": {
+                        "configs": []
+                    },
+                    "party_id": "party-fa",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    }
+                }
+            },
+            "stage_type": 128,
+            "stage_type_str": "preprocessing2_train",
+            "stage_name": "数据预处理（训练）-1",
+            "id": "17",
+            "left": -73,
+            "top": 125,
+            "index": 17,
+            "dependencies": [
+                1
+            ],
+            "version": "0.1.0"
+        },
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "data.table": {
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "upstream",
+                            "upstream_info": "隐私求交-1:1:intersection.table",
+                            "upstream_v2": {
+                                "index": 1,
+                                "inner_id": 1,
+                                "key": "intersection.table"
+                            },
+                            "upstream_node_id": "1"
+                        }
+                    },
+                    "outputs": {
+                        "data.table": {},
+                        "model.prep_v2.model": {}
+                    },
+                    "params": {
+                        "configs": []
+                    },
+                    "party_id": "party-fb",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    }
+                }
+            },
+            "stage_type": 128,
+            "stage_type_str": "preprocessing2_train",
+            "stage_name": "数据预处理（训练）-2",
+            "id": "18",
+            "left": 326,
+            "top": 115,
+            "index": 18,
+            "dependencies": [
+                1
+            ],
+            "version": "0.1.0"
+        }
+    ],
+    "type": 1,
+    "resource_request": {
+        "mode": 1,
+        "resource": {
+            "cpu": {
+                "unit": 2
+            },
+            "memory": {
+                "unit": 2
+            }
+        }
+    }
+}

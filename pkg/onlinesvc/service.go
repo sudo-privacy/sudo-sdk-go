@@ -42,7 +42,7 @@ func (service *Service) Predict(
 	if service.Base == nil {
 		return nil, errors.New("service.Base is nil")
 	}
-	if service.Base.OwnerPartyId != service.Factory.partyID {
+	if service.Base.OwnerPartyId != service.Factory.PartyID {
 		return nil, errors.New("you are not owner of this Service")
 	}
 	splitPath := strings.Split(service.Base.Path, "/")
@@ -55,7 +55,7 @@ func (service *Service) Approve(ctx context.Context) error {
 	if service.Base == nil {
 		return errors.New("service.Base is nil")
 	}
-	if service.Base.OwnerPartyId == service.Factory.partyID {
+	if service.Base.OwnerPartyId == service.Factory.PartyID {
 		return errors.New("can not approve self service")
 	}
 	_, err := service.Factory.SudoClient.ApplicationTakeAction(ctx, &apl.AplTakeActionRequest{
@@ -64,7 +64,7 @@ func (service *Service) Approve(ctx context.Context) error {
 			RefId:  service.Base.ServiceId,
 			Type:   "predictService",
 		},
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrapf(err, "falied to approve service %s", service.Base.Name)
@@ -77,7 +77,7 @@ func (service *Service) Reject(ctx context.Context) error {
 	if service.Base == nil {
 		return errors.New("service.Base is nil")
 	}
-	if service.Base.OwnerPartyId != service.Factory.partyID {
+	if service.Base.OwnerPartyId != service.Factory.PartyID {
 		return errors.New("can not reject self service")
 	}
 	_, err := service.Factory.SudoClient.ApplicationTakeAction(ctx, &apl.AplTakeActionRequest{
@@ -86,7 +86,7 @@ func (service *Service) Reject(ctx context.Context) error {
 			RefId:  service.Base.ServiceId,
 			Type:   "predictService",
 		},
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrapf(err, "falied to reject service %s", service.Base.Name)
@@ -101,7 +101,7 @@ func (service *Service) CancelService(ctx context.Context) error {
 			ServiceId: service.Base.ServiceId,
 			Action:    enums.Service_CANCEL,
 		},
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrap(err, "failed to terminate Service")
@@ -116,7 +116,7 @@ func (service *Service) ReapplyService(ctx context.Context) error {
 			ServiceId: service.Base.ServiceId,
 			Action:    enums.Service_REAPPLY,
 		},
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrap(err, "failed to reapply Service")
@@ -131,7 +131,7 @@ func (service *Service) TerminateService(ctx context.Context) error {
 			ServiceId: service.Base.ServiceId,
 			Action:    enums.Service_TERMINATE,
 		},
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrap(err, "failed to terminate Service")
@@ -146,7 +146,7 @@ func (service *Service) RebootService(ctx context.Context) error {
 			ServiceId: service.Base.ServiceId,
 			Action:    enums.Service_REBOOT,
 		},
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrap(err, "failed to reboot Service")
@@ -193,7 +193,7 @@ func (service *Service) Delete(ctx context.Context) error {
 func (service *Service) deleteService(ctx context.Context) error {
 	_, err := service.Factory.SudoClient.DeleteService(ctx, &online_service.DeleteServiceRequest{
 		ServiceId: service.Base.ServiceId,
-		ToTusita:  service.Factory.tusitaID,
+		ToTusita:  service.Factory.TusitaID,
 	})
 	if err != nil {
 		return errors.Wrap(err, "failed to delete service")
@@ -271,7 +271,7 @@ func (service *Service) waitStatus(
 
 func (service *Service) getStatus(ctx context.Context) (enums.Service_Status, error) {
 	tab := enums.Service_SELF
-	if service.Base.OwnerPartyId != service.Factory.partyID {
+	if service.Base.OwnerPartyId != service.Factory.PartyID {
 		tab = enums.Service_OTHERS
 	}
 	resp, err := service.Factory.SudoClient.GetServices(ctx, &online_service.GetServicesRequest{
@@ -279,7 +279,7 @@ func (service *Service) getStatus(ctx context.Context) (enums.Service_Status, er
 			ServiceIds: []uint64{service.Base.ServiceId},
 		},
 		Tab:      tab.String(),
-		ToTusita: service.Factory.tusitaID,
+		ToTusita: service.Factory.TusitaID,
 	})
 	if err != nil {
 		return 0, errors.Wrap(err, "get service failed")
@@ -304,7 +304,7 @@ func (service *Service) getStatus(ctx context.Context) (enums.Service_Status, er
 func (service *Service) getMessage(ctx context.Context) (string, error) {
 	resp, err := service.Factory.SudoClient.GetService(ctx, &online_service.GetServiceRequest{
 		ServiceId: strconv.FormatUint(service.Base.ServiceId, 10),
-		ToTusita:  service.Factory.tusitaID,
+		ToTusita:  service.Factory.TusitaID,
 	})
 	if err != nil {
 		return "", errors.Wrap(err, "get service failed")

@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/metadata"
 
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/offlinetask"
 	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/online_service"
@@ -20,54 +21,27 @@ import (
 // Factory 是对 [sudoclient.SudoClient] 的简单封装，其中配置了中心节点和项目，提供创建在线服务方法。
 type Factory struct {
 	*sudoclient.SudoClient
-	projectID uint64
-	tusitaID  string
-	// 本方partyID
-	partyID string
+	offlinetask.Project
 }
 
 func NewFactory(
 	client *sudoclient.SudoClient,
-	tusitaID string,
-	projectID uint64,
-	partyID string) *Factory {
+	project offlinetask.Project) (*Factory, error) {
+	if err := project.Valid(); err != nil {
+		return nil, err
+	}
 	return &Factory{
 		SudoClient: client,
-		projectID:  projectID,
-		tusitaID:   tusitaID,
-		partyID:    partyID,
-	}
-}
-
-// OperatorVtableInput 配置Dag中多个算子的输入
-type OperatorVtableInput struct {
-	Stage map[string]StageVtableInput
-}
-
-// StageVtableInput 配置单个算子中多个参与方的输入
-type StageVtableInput struct {
-	Input map[string]PartyVtableInput
-}
-
-// PartyVtableInput 配置一个算子中的一个参与方的一种输入
-type PartyVtableInput struct {
-	Input map[string]VTableInput
-}
-
-// VTableInput 配置Vtable输入
-type VTableInput struct {
-	VtableID uint64
-	// 索引列
-	KeyColumn          string
-	selectedVtableCols []string
+		Project:    project,
+	}, nil
 }
 
 // 检查预测任务使用合法性
 func (f *Factory) verifyPredictTask(ctx context.Context, taskID uint64) error {
 	taskInfo, err := f.SudoClient.GetTasks(ctx, &task.GetTasksRequest{
 		TaskId:    taskID,
-		ToTusita:  f.tusitaID,
-		ProjectId: f.projectID,
+		ToTusita:  f.TusitaID,
+		ProjectId: f.ProjectID,
 	})
 	if err != nil {
 		return errors.Wrap(err, "get tasks error")
@@ -79,7 +53,7 @@ func (f *Factory) verifyPredictTask(ctx context.Context, taskID uint64) error {
 		return errors.New("task field is nil")
 	}
 
-	if taskInfo.Data[0].Base.Base.OwnerParty != f.partyID {
+	if taskInfo.Data[0].Base.Base.OwnerParty != f.PartyID {
 		return errors.New("task owner is not this party")
 	}
 
@@ -91,7 +65,7 @@ func (f *Factory) verifyPredictTask(ctx context.Context, taskID uint64) error {
 }
 
 // 检查onlineBlock input配置和预测任务算子的.table输入配置对齐
-func (f *Factory) verifyOnlineInputs(ctx context.Context, taskID uint64, onlineInput *OperatorVtableInput) error {
+func (f *Factory) verifyOnlineInputs(ctx context.Context, taskID uint64, onlineInput *offlinetask.OperatorInput) error {
 	taskInputs, err := f.GetTaskVTableInputs(ctx, taskID)
 	if err != nil {
 		return err
@@ -100,20 +74,15 @@ func (f *Factory) verifyOnlineInputs(ctx context.Context, taskID uint64, onlineI
 	if err != nil {
 		return err
 	}
-	for stage, stageInput := range taskInputs.Stage {
-		_, ok := onlineInput.Stage[stage]
-		if !ok {
-			return errors.Errorf("stage %s input not found", stage)
-		}
-		for party, partyInputs := range stageInput.Input {
-			_, ok := onlineInput.Stage[stage].Input[party]
-			if !ok {
-				return errors.Errorf("stage %s party %s input not found", stage, party)
-			}
-			for inputKey := range partyInputs.Input {
-				_, ok := onlineInput.Stage[stage].Input[party].Input[inputKey]
-				if !ok {
-					return errors.Errorf("stage %s party %s input %s not found", stage, party, inputKey)
+	for stage, stageInput := range taskInputs.Stages {
+		partiesInput := []offlinetask.PartyInput{}
+		partiesInput = append(partiesInput, stageInput.Client)
+		partiesInput = append(partiesInput, stageInput.Servers...)
+		for i := range partiesInput {
+			for j := range partiesInput[i].Vtables {
+				_, err = onlineInput.GetInputVtable(stage, uint64(i), partiesInput[i].PartyID, j)
+				if err != nil {
+					return err
 				}
 			}
 		}
@@ -122,14 +91,14 @@ func (f *Factory) verifyOnlineInputs(ctx context.Context, taskID uint64, onlineI
 }
 
 // GetTaskVTableInputs 收集预测任务中所有算子的 .table 类型输入，可用于引导onlineBlock Input配置。
-func (f *Factory) GetTaskVTableInputs(ctx context.Context, taskID uint64) (*OperatorVtableInput, error) {
+func (f *Factory) GetTaskVTableInputs(ctx context.Context, taskID uint64) (*offlinetask.OperatorInput, error) {
 	taskInfo, err := f.SudoClient.GetTasks(ctx, &task.GetTasksRequest{
 		TaskId:        taskID,
-		ToTusita:      f.tusitaID,
+		ToTusita:      f.TusitaID,
 		WithJobConfig: true,
 	})
-	resp := OperatorVtableInput{
-		Stage: make(map[string]StageVtableInput),
+	resp := offlinetask.OperatorInput{
+		Stages: make(map[string]offlinetask.StageInput),
 	}
 	if err != nil {
 		return nil, errors.Wrap(err, "get tasks error")
@@ -140,47 +109,40 @@ func (f *Factory) GetTaskVTableInputs(ctx context.Context, taskID uint64) (*Oper
 	if taskInfo.Data[0].Base == nil || taskInfo.Data[0].Base.Base == nil {
 		return nil, errors.New("task field is nil")
 	}
-	task := taskInfo.Data[0].Base.Base
-	for i := range task.Stages {
-		if task.Stages[i] == nil || task.Stages[i].Config == nil {
+	taskModel := taskInfo.Data[0].Base.Base
+	for i := range taskModel.Stages {
+		if taskModel.Stages[i] == nil || taskModel.Stages[i].Config == nil {
 			continue
 		}
-		stageVtableInput := StageVtableInput{
-			Input: make(map[string]PartyVtableInput),
+		stageInput := offlinetask.StageInput{
+			Servers: make([]offlinetask.PartyInput, 0),
 		}
+		partiesConfigs := []*task.SiteConfig{}
+		partiesConfigs = append(partiesConfigs, taskModel.Stages[i].Config.ClientConfig)
+		partiesConfigs = append(partiesConfigs, taskModel.Stages[i].Config.ServerConfigs...)
 
-		if task.Stages[i].Config.ClientConfig != nil {
-			partyVtableInput := PartyVtableInput{
-				Input: make(map[string]VTableInput),
-			}
-			for k, v := range task.Stages[i].Config.ClientConfig.Inputs {
-				if v.Type == "vtable" && strings.Contains(k, ".table") {
-					partyVtableInput.Input[k] = VTableInput{VtableID: v.Id, selectedVtableCols: v.SelectedVtableCols}
-				}
-			}
-			if len(partyVtableInput.Input) > 0 {
-				stageVtableInput.Input[task.Stages[i].Config.ClientConfig.PartyId] = partyVtableInput
-			}
-		}
-		for j := range task.Stages[i].Config.ServerConfigs {
-			if task.Stages[i].Config.ServerConfigs[j] == nil {
+		for j := range partiesConfigs {
+			if partiesConfigs[j] == nil {
 				continue
 			}
-			partyVtableInput := PartyVtableInput{
-				Input: make(map[string]VTableInput),
+			partyVtableInput := offlinetask.PartyInput{
+				PartyID: partiesConfigs[j].PartyId,
+				Vtables: make(map[string]offlinetask.VTableInput),
 			}
-			for k, v := range task.Stages[i].Config.ServerConfigs[j].Inputs {
+			for k, v := range partiesConfigs[j].Inputs {
 				if v.Type == "vtable" && strings.Contains(k, ".table") {
-					partyVtableInput.Input[k] = VTableInput{VtableID: v.Id, selectedVtableCols: v.SelectedVtableCols}
+					partyVtableInput.Vtables[k] = offlinetask.VTableInput{VtableID: v.Id, SelectedVtableCols: v.SelectedVtableCols}
 				}
 			}
-			if len(partyVtableInput.Input) > 0 {
-				stageVtableInput.Input[task.Stages[i].Config.ServerConfigs[j].PartyId] = partyVtableInput
+			if len(partyVtableInput.Vtables) > 0 {
+				if j == 0 {
+					stageInput.Client = partyVtableInput
+				} else {
+					stageInput.Servers = append(stageInput.Servers, partyVtableInput)
+				}
 			}
 		}
-		if len(stageVtableInput.Input) > 0 {
-			resp.Stage[task.Stages[i].StageName] = stageVtableInput
-		}
+		resp.Stages[taskModel.Stages[i].StageName] = stageInput
 	}
 	err = f.fetchInputsColumns(ctx, &resp)
 	if err != nil {
@@ -190,21 +152,24 @@ func (f *Factory) GetTaskVTableInputs(ctx context.Context, taskID uint64) (*Oper
 }
 
 // 补充输入table的具体column配置，目前未使用
-func (f *Factory) fetchInputsColumns(ctx context.Context, inputs *OperatorVtableInput) error {
-	for stage := range inputs.Stage {
-		for party := range inputs.Stage[stage].Input {
-			for inputKey, vtableInput := range inputs.Stage[stage].Input[party].Input {
-				if len(vtableInput.selectedVtableCols) == 0 {
-					vtableInput.selectedVtableCols = []string{"*"}
+func (f *Factory) fetchInputsColumns(ctx context.Context, inputs *offlinetask.OperatorInput) error {
+	for stage := range inputs.Stages {
+		parties := []offlinetask.PartyInput{}
+		parties = append(parties, inputs.Stages[stage].Client)
+		parties = append(parties, inputs.Stages[stage].Servers...)
+		for i := range parties {
+			for inputKey, vtableInput := range parties[i].Vtables {
+				if len(vtableInput.SelectedVtableCols) == 0 {
+					vtableInput.SelectedVtableCols = []string{"*"}
 				}
-				if len(vtableInput.selectedVtableCols) == 1 && vtableInput.selectedVtableCols[0] == "*" {
+				if len(vtableInput.SelectedVtableCols) == 1 && vtableInput.SelectedVtableCols[0] == "*" {
 					// add to-tusita metadata
-					newCtx := metadata.AppendToOutgoingContext(ctx, "to-tusita", f.tusitaID)
+					newCtx := metadata.AppendToOutgoingContext(ctx, "to-tusita", f.TusitaID)
 					resp, err := f.SudoClient.ListVtables(newCtx, &vtable.ListVtablesRequest{
 						QueryOptions: &basicvtable.VtableQueryOptions{
 							Id:               vtableInput.VtableID,
 							WithSegmentation: true,
-							PartyId:          party,
+							PartyId:          parties[i].PartyID,
 						},
 					})
 					if err != nil {
@@ -220,9 +185,13 @@ func (f *Factory) fetchInputsColumns(ctx context.Context, inputs *OperatorVtable
 					for i := range resp.Data[0].Base.Columns {
 						columns = append(columns, resp.Data[0].Base.Columns[i].Field)
 					}
-					vtableInput.selectedVtableCols = columns
+					vtableInput.SelectedVtableCols = columns
 				}
-				inputs.Stage[stage].Input[party].Input[inputKey] = vtableInput
+				if i == 0 {
+					inputs.Stages[stage].Client.Vtables[inputKey] = vtableInput
+				} else {
+					inputs.Stages[stage].Servers[i-1].Vtables[inputKey] = vtableInput
+				}
 			}
 		}
 	}
@@ -230,20 +199,23 @@ func (f *Factory) fetchInputsColumns(ctx context.Context, inputs *OperatorVtable
 }
 
 // 检查vtable在project中可见，且为MYSQL类型
-func (f *Factory) verifyTables(ctx context.Context, inputs *OperatorVtableInput) error {
-	for stage := range inputs.Stage {
-		for party := range inputs.Stage[stage].Input {
-			for _, vtableInput := range inputs.Stage[stage].Input[party].Input {
+func (f *Factory) verifyTables(ctx context.Context, inputs *offlinetask.OperatorInput) error {
+	for stage := range inputs.Stages {
+		parties := []offlinetask.PartyInput{}
+		parties = append(parties, inputs.Stages[stage].Client)
+		parties = append(parties, inputs.Stages[stage].Servers...)
+		for i := range parties {
+			for _, vtableInput := range parties[i].Vtables {
 				// add to-tusita metadata
-				newCtx := metadata.AppendToOutgoingContext(ctx, "to-tusita", f.tusitaID)
+				newCtx := metadata.AppendToOutgoingContext(ctx, "to-tusita", f.TusitaID)
 				resp, err := f.SudoClient.ListVtables(newCtx, &vtable.ListVtablesRequest{
 					QueryOptions: &basicvtable.VtableQueryOptions{
 						Id:               vtableInput.VtableID,
 						WithSegmentation: true,
-						PartyId:          party,
+						PartyId:          parties[i].PartyID,
 						WithDatasrc:      true,
 						WithAdditional:   true,
-						ProjectId:        f.projectID,
+						ProjectId:        f.ProjectID,
 					},
 				})
 				if err != nil {
@@ -274,13 +246,13 @@ func (f *Factory) verifyTables(ctx context.Context, inputs *OperatorVtableInput)
 // 2.使用input配置 onlineBlock模板中的onlineInput
 func (f *Factory) getOnlineBlock(
 	ctx context.Context, taskID uint64,
-	inputs *OperatorVtableInput,
+	inputs *offlinetask.OperatorInput,
 ) (*online_service.OnlineBlockTemplate, error) {
 	resp, err := f.SudoClient.GetOnlineBlockFromModel(ctx, &online_service.GetOnlineBlockFromModelRequest{
 		TaskId:       taskID,
 		MajorVersion: 1,
 		MinorVersion: 0,
-		ToTusita:     f.tusitaID,
+		ToTusita:     f.TusitaID,
 	})
 	if err != nil {
 		return nil, err
@@ -293,10 +265,10 @@ func (f *Factory) getOnlineBlock(
 	return onlineBlock, nil
 }
 
-// 将input配置到OnlineBlock模板中
+// setOnlineBlockTableInputs 将input配置到OnlineBlock模板中
 func (f *Factory) setOnlineBlockTableInputs(
 	onlineBlock *online_service.OnlineBlockTemplate,
-	inputs *OperatorVtableInput,
+	inputs *offlinetask.OperatorInput,
 ) (*online_service.OnlineBlockTemplate, error) {
 	for i := range onlineBlock.Operators {
 		if onlineBlock.Operators[i] == nil {
@@ -311,28 +283,16 @@ func (f *Factory) setOnlineBlockTableInputs(
 					continue
 				}
 				if strings.Contains(k, ".table") {
-					stageInput, ok := inputs.Stage[onlineBlock.Operators[i].Name]
-					if !ok {
-						return nil, errors.Errorf("stage %s input not found", onlineBlock.Operators[i].Name)
-					}
-					partyInput, ok := stageInput.Input[onlineBlock.Operators[i].Participants[j].PartyId]
-					if !ok {
-						return nil, errors.Errorf("stage %s party %s input not found",
-							onlineBlock.Operators[i].Name,
-							onlineBlock.Operators[i].Participants[j].PartyId,
-						)
-					}
-					vtableInput, ok := partyInput.Input[k]
-					if !ok {
-						return nil, errors.Errorf("stage %s party %s input %s not found",
-							onlineBlock.Operators[i].Name,
-							onlineBlock.Operators[i].Participants[j].PartyId,
-							k,
-						)
+					vtable, err := inputs.GetInputVtable(
+						onlineBlock.Operators[i].Name, uint64(j),
+						onlineBlock.Operators[i].Participants[j].PartyId,
+						k)
+					if err != nil {
+						return nil, err
 					}
 					onlineBlock.Operators[i].Participants[j].OnlineInputs[k] = &online_service.OnlineInput{
-						VtableId:  vtableInput.VtableID,
-						KeyColumn: vtableInput.KeyColumn,
+						VtableId:  vtable.VtableID,
+						KeyColumn: vtable.KeyColumn,
 					}
 				}
 			}
@@ -358,7 +318,7 @@ func (f *Factory) CreateService(
 	name string,
 	protectID bool,
 	taskID uint64,
-	onlineInputs *OperatorVtableInput) (*Service, error) {
+	onlineInputs *offlinetask.OperatorInput) (*Service, error) {
 	err := f.verifyPredictTask(ctx, taskID)
 	if err != nil {
 		return nil, err
@@ -376,7 +336,7 @@ func (f *Factory) CreateService(
 		Service: &online_service.ServiceParam{
 			Name:         name,
 			ServiceType:  enums.Service_PREDICT,
-			ProjectId:    f.projectID,
+			ProjectId:    f.ProjectID,
 			Path:         sudoclient.RandPath(6),
 			ProtectId:    protectID,
 			TaskId:       taskID,
@@ -384,7 +344,7 @@ func (f *Factory) CreateService(
 			MinorVersion: 0,
 			OnlineBlock:  onlineBlock,
 		},
-		ToTusita: f.tusitaID,
+		ToTusita: f.TusitaID,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "createService failed")
@@ -402,13 +362,13 @@ func (f *Factory) NewService(
 	name string,
 	protectID bool,
 	taskID uint64,
-	onlineInputs *OperatorVtableInput) (*Service, error) {
+	onlineInputs *offlinetask.OperatorInput) (*Service, error) {
 	resp, err := f.SudoClient.GetServices(ctx, &online_service.GetServicesRequest{
 		Filter: &online_service.ServiceFilter{
 			Pager: &paginator.Paginator{
 				NotPaging: true,
 			},
-			OwnerPartyId: f.partyID,
+			OwnerPartyId: f.PartyID,
 			ServiceType:  "PREDICT",
 		},
 		Tab: "SELF",
@@ -430,7 +390,7 @@ func (f *Factory) NewService(
 // GetServices 查询 [Service] ，根据输入的过滤参数，可能返回0个、1个 或多个 Server。
 // tusita参数会从Factory中配置
 func (f *Factory) GetServices(ctx context.Context, query *online_service.GetServicesRequest) ([]*Service, error) {
-	query.ToTusita = f.tusitaID
+	query.ToTusita = f.TusitaID
 	servicesResp, err := f.SudoClient.GetServices(ctx, query)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get servicess")
@@ -449,7 +409,7 @@ func (f *Factory) GetServices(ctx context.Context, query *online_service.GetServ
 func (f *Factory) GetService(ctx context.Context, serviceID uint64) (*Service, error) {
 	resp, err := f.SudoClient.GetService(ctx, &online_service.GetServiceRequest{
 		ServiceId: strconv.FormatUint(serviceID, 10),
-		ToTusita:  f.tusitaID,
+		ToTusita:  f.TusitaID,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "get service failed")

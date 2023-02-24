@@ -1,0 +1,187 @@
+{
+    "name": "预测",
+    "description": " ",
+    "priority": 2,
+    "stages": [
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "data.table": {
+                            "id": 0,
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "vtable"
+                        },
+                        "model.prep_v2.model": {
+                            "id": 0,
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "vtable"
+                        }
+                    },
+                    "outputs": {
+                        "data.table": {}
+                    },
+                    "party_id": "party-fa",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    },
+                    "params": {}
+                },
+                "shared_params": {}
+            },
+            "stage_type": 129,
+            "stage_type_str": "preprocessing2_predict",
+            "stage_name": "数据预处理（训练）-1",
+            "id": "17",
+            "left": -73,
+            "top": 125,
+            "index": 17,
+            "dependencies": []
+        },
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "data.table": {
+                            "id": 0,
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "vtable"
+                        },
+                        "model.prep_v2.model": {
+                            "id": 0,
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "vtable"
+                        }
+                    },
+                    "outputs": {
+                        "data.table": {}
+                    },
+                    "party_id": "party-fb",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    },
+                    "params": {}
+                },
+                "shared_params": {}
+            },
+            "stage_type": 129,
+            "stage_type_str": "preprocessing2_predict",
+            "stage_name": "数据预处理（训练）-2",
+            "id": "18",
+            "left": 326,
+            "top": 115,
+            "index": 18,
+            "dependencies": []
+        },
+        {
+            "config": {
+                "client_config": {
+                    "inputs": {
+                        "model.vxgb.client.model": {
+                            "id": 0,
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "vtable"
+                        },
+                        "all_data.table": {
+                            "selected_vtable_cols": [
+                                "*"
+                            ],
+                            "type": "upstream",
+                            "upstream_v2": {
+                                "index": 17,
+                                "key": "data.table"
+                            }
+                        }
+                    },
+                    "outputs": {
+                        "prediction.table": {}
+                    },
+                    "party_id": "party-fa",
+                    "resource_request": {
+                        "resource": {
+                            "cpu": {},
+                            "memory": {}
+                        }
+                    },
+                    "params": {}
+                },
+                "server_configs": [
+                    {
+                        "inputs": {
+                            "all_data.table": {
+                                "selected_vtable_cols": [
+                                    "*"
+                                ],
+                                "type": "upstream",
+                                "upstream_info": "数据预处理（训练）-2:0:data.table",
+                                "upstream_v2": {
+                                    "index": 18,
+                                    "key": "data.table"
+                                },
+                                "upstream_node_id": "18"
+                            },
+                            "model.vxgb.server.model": {
+                                "id": 0,
+                                "selected_vtable_cols": [
+                                    "*"
+                                ],
+                                "type": "vtable"
+                            }
+                        },
+                        "party_id": "party-fb",
+                        "resource_request": {
+                            "resource": {
+                                "cpu": {},
+                                "memory": {}
+                            }
+                        },
+                        "outputs": {},
+                        "params": {}
+                    }
+                ],
+                "shared_params": {
+                    "output_type": "client"
+                }
+            },
+            "stage_type": 4,
+            "stage_type_str": "xgboost_predict",
+            "stage_name": "XGB-训练",
+            "id": "6",
+            "left": 119,
+            "top": 285,
+            "index": 6,
+            "dependencies": [
+                17,
+                18
+            ]
+        }
+    ],
+    "type": 4,
+    "resource_request": {
+        "mode": 1,
+        "resource": {
+            "cpu": {
+                "unit": 2
+            },
+            "memory": {
+                "unit": 2
+            }
+        }
+    }
+}
