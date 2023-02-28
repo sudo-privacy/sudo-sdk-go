@@ -46,7 +46,7 @@ func ExampleService_Predict() {
 		ProjectID: 442450667450138891,
 		PartyID:   "party-f2",
 	})
-
+	// vtable可以使用数牍隐私计算平台上已经存在的，也可以通过 sudoclient.CreateVtableFromLocalFile、sudoclient.CreateVtableFromDB 提前创建。
 	input := &offlinetask.OperatorInput{
 		Stages: map[string]offlinetask.StageInput{
 			"数据预处理（训练）-1": {
@@ -121,7 +121,9 @@ func ExampleService_Predict_all() {
 		"party-f1": 2,
 		"party-f2": 2,
 	}
+
 	// 替换训练任务模板中的参与方和输入
+	// vtable可以使用数牍隐私计算平台上已经存在的，也可以通过 sudoclient.CreateVtableFromLocalFile、sudoclient.CreateVtableFromDB 提前创建。
 	trainTaskVtableInput := &offlinetask.OperatorInput{
 		Stages: map[string]offlinetask.StageInput{
 			"隐私求交-1": {
@@ -318,6 +320,7 @@ func ExampleService_Predict_all() {
 	if err != nil {
 		// TODO: Handle error.
 	}
+	// 服务方准备批准服务
 	onlinesvcF2, _ := NewFactory(sudoClientF2, offlinetask.Project{
 		TusitaID:  "tusita-t1",
 		ProjectID: 442450667450138891,

@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/pir"
+	"github.com/sudo-privacy/sudo-sdk-go/pkg/onlinesvc/pir"
 	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
 	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums"
 	protopir "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir"
