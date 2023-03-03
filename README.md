@@ -4,7 +4,7 @@
 
 ## Stability
 
-非稳定版本，开发中。
+最新稳定版v2.1，和数牍隐私计算平台v2.1兼容。
 
 ## Go Version Support
 
