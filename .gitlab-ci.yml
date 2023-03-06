@@ -98,8 +98,7 @@ build:
     - when: manual
       allow_failure: true
   script:
-    - cd v2
-    - ../scripts/cicd_scripts/ci_build_helper.sh -c sudosdk_godoc -f "godoc.dockerfile"
+    - ./scripts/cicd_scripts/ci_build_helper.sh -c sudosdk_godoc -f "godoc.dockerfile"
 
 godoc_deploy_devops:
   stage: deploy_devops_cluster
