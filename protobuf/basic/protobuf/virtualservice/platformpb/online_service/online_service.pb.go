@@ -21,12 +21,12 @@
 package online_service
 
 import (
-	protobuf "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf"
-	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
-	infra_adapter "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/infra_adapter"
-	apl "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/apl"
-	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	paginator "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
+	protobuf "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf"
+	enums "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums"
+	infra_adapter "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/infra_adapter"
+	apl "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/apl"
+	_ "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	paginator "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"

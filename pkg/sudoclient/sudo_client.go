@@ -12,12 +12,12 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
-	basiccommon "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
-	basicfurnace "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/service/furnace"
-	basicvtable "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
-	common "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/service/common"
-	furnace "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/service/furnace"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/datasource"
+	basiccommon "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/service/common"
+	basicfurnace "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/service/furnace"
+	basicvtable "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
+	common "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/virtualservice/platformpb/service/common"
+	furnace "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/virtualservice/platformpb/service/furnace"
 )
 
 // BasicSudoClient 封装基础版sudo-api生成的 gRPC client。
