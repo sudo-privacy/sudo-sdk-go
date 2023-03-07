@@ -21,9 +21,9 @@
 package party
 
 import (
-	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
-	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	paginator "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
+	enums "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums"
+	_ "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	paginator "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

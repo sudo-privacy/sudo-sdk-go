@@ -7,9 +7,9 @@
 package user
 
 import (
-	_ "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/options"
-	user "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/user"
-	perm "github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/perm"
+	_ "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/options"
+	user "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/user"
+	perm "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/virtualservice/platformpb/perm"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

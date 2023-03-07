@@ -8,14 +8,14 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/offlinetask"
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/online_service"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/task"
-	basicvtable "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/vtable"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/offlinetask"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/online_service"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/paginator"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/task"
+	basicvtable "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/vtable"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/virtualservice/platformpb/vtable"
 )
 
 // Factory 是对 [sudoclient.SudoClient] 的简单封装，其中配置了中心节点和项目，提供创建在线服务方法。

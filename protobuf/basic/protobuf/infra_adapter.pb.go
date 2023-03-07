@@ -21,9 +21,9 @@
 package protobuf
 
 import (
-	common "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/common"
-	enums "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
-	infra_adapter "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/infra_adapter"
+	common "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/common"
+	enums "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums"
+	infra_adapter "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/infra_adapter"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"

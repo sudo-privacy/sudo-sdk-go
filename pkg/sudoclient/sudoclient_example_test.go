@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/vtable"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/virtualservice/platformpb/vtable"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )

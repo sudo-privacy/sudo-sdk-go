@@ -5,12 +5,12 @@ import (
 	"io"
 	"os"
 
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/offlinetask"
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/enums"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/online_service"
-	prototask "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/task"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/virtualservice/platformpb/task"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/offlinetask"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/online_service"
+	prototask "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/task"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/virtualservice/platformpb/task"
 )
 
 // 从预测任务完成后开始的流程

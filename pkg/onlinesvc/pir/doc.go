@@ -36,5 +36,5 @@ package pir
 
 import (
 	// Register fo doc
-	_ "github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
+	_ "github.com/sudo-privacy/sudo-sdk-go/v2/pkg/sudoclient"
 )

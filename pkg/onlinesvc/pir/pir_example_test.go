@@ -9,11 +9,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/onlinesvc/pir"
-	"github.com/sudo-privacy/sudo-sdk-go/pkg/sudoclient"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/service/enums"
-	protopir "github.com/sudo-privacy/sudo-sdk-go/protobuf/basic/protobuf/virtualservice/platformpb/pir"
-	"github.com/sudo-privacy/sudo-sdk-go/protobuf/online_service"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/onlinesvc/pir"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/pkg/sudoclient"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/service/enums"
+	protopir "github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/virtualservice/platformpb/pir"
+	"github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/online_service"
 )
 
 func ExampleClient_Pir() {
