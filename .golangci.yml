@@ -37,7 +37,7 @@ linters-settings:
       - HACK
       #- TODO
   goimports:
-    local-prefixes: github.com/sudo-privacy/sudo-sdk-go/v2
+    local-prefixes: github.com/sudo-privacy/sudo-sdk-go
   gomoddirectives:
     replace-local: true
 
