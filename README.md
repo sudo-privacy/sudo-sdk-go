@@ -4,11 +4,11 @@
 
 ## Stability
 
-最新稳定版v2.1，和数牍隐私计算平台v2.1兼容。
+最新稳定版v2.1.0，和数牍隐私计算平台v2.1.0兼容。
 
 ## Go Version Support
 
-go 1.18+
+推荐使用1.17.3
 
 ## Authorization
 

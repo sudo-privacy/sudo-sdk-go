@@ -40,7 +40,7 @@ func NewPirFactory(client *sudoclient.SudoClient) *Factory {
 //	- dataParam 配置提供服务的数据来源。
 //	  如果使用vtable，使用数牍隐私计算平台上已经存在的，也可以通过 [sudoclient.BasicSudoClient.CreateVtableFromLocalFile] 、
 //	   [sudoclient.BasicSudoClient.CreateVtableFromDB] 提前创建。
-//	  vtable属性可以通过 FurnaceClient.ListVtables 查询。
+//	  vtable属性可以通过 platformpb.FurnaceClient.ListVtables 查询。
 //
 //	- keyColumns 指定pir匹配列。
 //

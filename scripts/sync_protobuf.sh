@@ -13,7 +13,7 @@ cd $project_dir
 
 protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/grpc-gateway \
-    --go_out=plugins=grpc:$project_dir/v2 \
+    --go_out=plugins=grpc:$project_dir \
     --go_opt=Msudo/protobuf/infra_adapter/infra_adapter.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf \
     --go_opt=Msudo/protobuf/infra_adapter/location/location.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/infra_adapter \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums \
@@ -64,7 +64,7 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Msudo/protobuf/enums/enums.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/enums \
     --go_opt=Msudo/protobuf/common.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/common \
     --go_opt=Msudo/protobuf/infra_adapter/location/location.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/infra_adapter \
-    --go_out=plugins=grpc:$project_dir/v2 \
+    --go_out=plugins=grpc:$project_dir \
     --go_opt=module=github.com/sudo-privacy/sudo-sdk-go/v2 \
     $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/mpc_virtual_service/platform/*.proto \
     $project_dir/sudo-apis/protobuf/basic/sudo/protobuf/mpc_virtual_service/platform/service/*.proto
@@ -117,7 +117,7 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
     --go_opt=Mprotobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/online_service/enums \
     --go_opt=Mprotobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/online_service \
     --go_opt=Mprotobuf/service/online_service_f3s.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/online_service \
-    --go_out=plugins=grpc:$project_dir/v2 \
+    --go_out=plugins=grpc:$project_dir \
     --go_opt=module=github.com/sudo-privacy/sudo-sdk-go/v2 \
     $project_dir/sudo-apis/protobuf/mpc_virtual_service/platform/*.proto \
     $project_dir/sudo-apis/protobuf/mpc_virtual_service/platform/service/common.proto \
@@ -126,7 +126,7 @@ protoc $@ -I=$project_dir/sudo-apis/protobuf/basic \
 protoc $@ -I=$project_dir/sudo-apis \
     -I=$project_dir/sudo-apis/protobuf/basic \
     -I=$project_dir/sudo-apis/protobuf/basic/sudo/protobuf/grpc-gateway \
-    --go_out=plugins=grpc:$project_dir/v2 \
+    --go_out=plugins=grpc:$project_dir \
     --go_opt=Msudo/protobuf/service/online_service.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/service \
     --go_opt=Msudo/protobuf/service/online_service_common.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/service \
     --go_opt=Msudo/protobuf/service/enums/online_svc_enums.proto=github.com/sudo-privacy/sudo-sdk-go/v2/protobuf/basic/protobuf/service/enums \
